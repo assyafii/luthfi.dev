@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : openstack, internal &amp;amp; external networks, flavor, images, instances, key, security groups
+Summary step Create external network Create router Create internal network Add internal network to router Create images Create flavor Create Instances &amp;amp; key Add floating IP Create security groups Add SG to instances Verify VM connectivity Step 1 by 1 1. Create external network Goto admin pages, and please follow guide correctly
+Make Physical Network use physnet1" />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/openstack-usages-create-network-image-instaces-etc./" />
+
+
+    <title>
+        
+            7. Openstack usages (create network, image, instaces, etc.) :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="7. Openstack usages (create network, image, instaces, etc.)">
+<meta itemprop="description" content="Specification : openstack, internal &amp; external networks, flavor, images, instances, key, security groups
+Summary step Create external network Create router Create internal network Add internal network to router Create images Create flavor Create Instances &amp; key Add floating IP Create security groups Add SG to instances Verify VM connectivity Step 1 by 1 1. Create external network Goto admin pages, and please follow guide correctly
+Make Physical Network use physnet1"><meta itemprop="datePublished" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="wordCount" content="316"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="7. Openstack usages (create network, image, instaces, etc.)"/>
+<meta name="twitter:description" content="Specification : openstack, internal &amp; external networks, flavor, images, instances, key, security groups
+Summary step Create external network Create router Create internal network Add internal network to router Create images Create flavor Create Instances &amp; key Add floating IP Create security groups Add SG to instances Verify VM connectivity Step 1 by 1 1. Create external network Goto admin pages, and please follow guide correctly
+Make Physical Network use physnet1"/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-01-02 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/openstack-usages-create-network-image-instaces-etc./"><ol start="7">
+<li>Openstack usages (create network, image, instaces, etc.)</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : openstack, internal &amp; external networks, flavor, images, instances, key, security groups</p>
+</blockquote>
+<h3 id="summary-step"><strong>Summary step</strong></h3>
+<ol>
+<li>Create external network</li>
+<li>Create router</li>
+<li>Create internal network</li>
+<li>Add internal network to router</li>
+<li>Create images</li>
+<li>Create flavor</li>
+<li>Create Instances &amp; key</li>
+<li>Add floating IP</li>
+<li>Create security groups</li>
+<li>Add SG to instances</li>
+<li>Verify VM connectivity</li>
+</ol>
+<p> </p>
+<hr>
+<p> 
+ </p>
+<h3 id="step-1-by-1"><strong>Step 1 by 1</strong></h3>
+<h4 id="1-create-external-network">1. Create external network</h4>
+<p>Goto admin pages, and please follow guide correctly</p>
+<p><img src="./images/1.png" alt="aio-yoga"></p>
+<p>Make <strong>Physical Network</strong> use <strong>physnet1</strong></p>
+<p><img src="./images/2.png" alt="aio-yoga"></p>
+<p>Add <strong>Network address</strong> by using <strong>ens4</strong> network address, because for external &amp; floating IP, make sure this network can connect to internet.</p>
+<p><img src="./images/3.png" alt="aio-yoga"></p>
+<h4 id="2-create-router">2. Create router</h4>
+<p>Add router</p>
+<p><img src="./images/4.png" alt="aio-yoga"></p>
+<p>Make sure <strong>external network</strong> using previously created</p>
+<p><img src="./images/5.png" alt="aio-yoga"></p>
+<h4 id="3-create-internal-network">3. Create Internal network</h4>
+<p>This network for instances private IP, you can use custom address</p>
+<p><img src="./images/6.png" alt="aio-yoga">
+<img src="./images/7.png" alt="aio-yoga"></p>
+<p>You can choose anything private address :</p>
+<p><img src="./images/8.png" alt="aio-yoga">
+<img src="./images/9.png" alt="aio-yoga"></p>
+<h4 id="4-add-internal-network-to-router">4. Add internal network to router</h4>
+<p>Back again to router menu, and add internal network on router like bellow :
+<img src="./images/10.png" alt="aio-yoga">
+<img src="./images/11.png" alt="aio-yoga">
+Make sure network correct :</p>
+<p><img src="./images/12.png" alt="aio-yoga"></p>
+<h4 id="5--6-create-images--flavor">5 &amp; 6, Create images &amp; Flavor</h4>
+<p>We use lightweight image with cirros</p>
+<pre tabindex="0"><code>wget http://download.cirros-cloud.net/0.5.2/cirros-0.5.2-x86_64-disk.img
+</code></pre><p><img src="./images/13.png" alt="aio-yoga"></p>
+<p><strong>Create image</strong></p>
+<pre tabindex="0"><code>openstack image create \
+    --container-format bare \
+    --disk-format qcow2 \
+    --file cirros-0.5.2-x86_64-disk.img \
+    cirros-img
+</code></pre><p><strong>Create flavor</strong></p>
+<pre tabindex="0"><code>openstack flavor create --ram 512  --vcpus 1 --disk 10 m1.tiny
+</code></pre><p><img src="./images/14.png" alt="aio-yoga"></p>
+<h4 id="7-create-instances">7. Create instances</h4>
+<p><img src="./images/15.png" alt="aio-yoga"></p>
+<p>add VM name
+<img src="./images/16.png" alt="aio-yoga"></p>
+<p>Chosse cirros image
+<img src="./images/17.png" alt="aio-yoga"></p>
+<p>Choose flavor
+<img src="./images/18.png" alt="aio-yoga"></p>
+<p>Choose internal network
+<img src="./images/19.png" alt="aio-yoga"></p>
+<p>Create new keypair or you can paste pubkey
+<img src="./images/20.png" alt="aio-yoga"></p>
+<h4 id="8-add-floating-ip">8. Add floating IP</h4>
+<p>Click on instances, choose floating ip address</p>
+<p><img src="./images/21.png" alt="aio-yoga">
+<img src="./images/22.png" alt="aio-yoga"></p>
+<p>For pool, you need use external network
+<img src="./images/23.png" alt="aio-yoga"></p>
+<p>Yeay, you already have floating IP
+<img src="./images/24.png" alt="aio-yoga"></p>
+<h4 id="9-create-security-group">9. Create security group</h4>
+<p>security group like firewall, you can open or closed port, by default deny all, we need create first to open</p>
+<p>Go to security groups menu</p>
+<p><img src="./images/25.png" alt="aio-yoga"></p>
+<p>Add rule for allow, bellow example allow all ICMP
+<img src="./images/26.png" alt="aio-yoga"></p>
+<p>allow all TCP (Only for test, better open by need)
+<img src="./images/27.png" alt="aio-yoga"></p>
+<h4 id="10-add-sg-to-instances">10. Add SG to instances</h4>
+<p><img src="./images/28.png" alt="aio-yoga">
+<img src="./images/29.png" alt="aio-yoga"></p>
+<h4 id="11-verify-vm-connectivity">11. Verify VM connectivity</h4>
+<p>Bellow you can see, we can access VM using Floating IP &amp; VM can ping to internet :)</p>
+<p><img src="./images/30.png" alt="aio-yoga"></p>
+<h2 id="thankyou">Thankyou</h2>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        316 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2021-01-02 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/install-openstack-aio-with-kolla-ansible-in-ubuntu/">
+                <span class="button__icon">←</span>
+                <span class="button__text">6. Install OpenStack AIO with Kolla-Ansible in Ubuntu</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="/posts/deploy-magmacore-on-aws-with-iaas-&#43;-openstack-for-agw-lab-part1/">
+                <span class="button__text">8. Deploy Magmacore on AWS with IaaS &#43; OpenStack for AGW (Lab) - Part1</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>

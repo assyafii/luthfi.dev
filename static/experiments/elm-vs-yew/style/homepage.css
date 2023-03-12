@@ -1,0 +1,31 @@
+.homepage-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 620px;
+  margin: auto;
+}
+
+.text-wrapper {
+  flex: 2;
+}
+
+.panels-wrapper {
+  display: flex;
+  flex: 3;
+  padding: 0 0.5rem 1.5rem 0.5rem;
+}
+
+.panel-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content {
+  padding: 0;
+  height: 100%;
+}
+
+.flex-1 {
+  flex: 1;
+}

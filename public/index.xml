@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>M. Luthfi As Syafii</title>
+    <link>/</link>
+    <description>Recent content on M. Luthfi As Syafii</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1. Install Kubernetes cluster multi Master High Availability</title>
+      <link>/posts/install-kubernetes-cluster-multi-master-high-availability/</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/install-kubernetes-cluster-multi-master-high-availability/</guid>
+      <description>Specification : Calico, Containerd, Haproxy, Kubernetes v1.22.x
+Lab Topology First, prepare all VM All Nodes except LB Nodes Set mapping hostname nano /etc/hosts Install packages containerd Load overlay and br_netfilter kernal modules.
+cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf overlay br_netfilter EOF sudo modprobe overlay sudo modprobe br_netfilter Set these system configurations for Kubernetes networking cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf net.bridge.bridge-nf-call-iptables = 1 net.ipv4.ip_forward = 1 net.bridge.bridge-nf-call-ip6tables = 1 EOF Apply settings sudo sysctl --system Install containerd sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install -y containerd sudo mkdir -p /etc/containerd sudo containerd config default | sudo tee /etc/containerd/config.</description>
+    </item>
+    
+    <item>
+      <title>2. Deploy storage cluster ROOK with CEPH in Kubernetes</title>
+      <link>/posts/deploy-storage-cluster-rook-with-ceph-in-kubernetes/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/deploy-storage-cluster-rook-with-ceph-in-kubernetes/</guid>
+      <description>Specification : Kubernetes, ROOK, CEPH
+Lab Topology You can check installation kubernetes cluster in previous documentation, https://assyafii.com/docs/install-kubernetes-cluster-multi-master-ha/ Storages nodes disks We use 3 disks extended (vdb, vdc, vdd) in each of storage-nodes, total 6 disks for rook cluster.
+Detail disks Master node Clone ROOK Project cd ~ git clone --single-branch --branch release-1.7 https://github.com/rook/rook.git Deploy the Rook Operator cd rook/cluster/examples/kubernetes/ceph kubectl create -f crds.yaml kubectl create -f common.yaml kubectl create -f operator.</description>
+    </item>
+    
+    <item>
+      <title>3. Deploy PortWorx storage in kubernetes</title>
+      <link>/posts/deploy-portworx-storage-in-kubernetes/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/deploy-portworx-storage-in-kubernetes/</guid>
+      <description>Specification : Kubernetes, PortWorx, Storage
+PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp;amp; Bandwidth.
+Lab Topology IP Address Nodes 10.20.10.230 sf-k8s-master-1 10.20.10.235 sf-k8s-node-1 10.20.10.241 sf-k8s-portworx-1 10.</description>
+    </item>
+    
+    <item>
+      <title>4. 5G Cloud Native Simulation with Open5Gs</title>
+      <link>/posts/5g-cloud-native-simulation-with-open5gs/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/5g-cloud-native-simulation-with-open5gs/</guid>
+      <description>Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher
+Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
+kubectl label namespace open5gs istio-injection=enabled Install Addons packages
+cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus.</description>
+    </item>
+    
+    <item>
+      <title>5. Deploy CRUD using AWS API Gateway, Serverless Lambda and DynamoDB</title>
+      <link>/posts/deploy-crud-using-aws-api-gateway-serverless-lambda-and-dynamodb/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/deploy-crud-using-aws-api-gateway-serverless-lambda-and-dynamodb/</guid>
+      <description>Specification : AWS, API Gateway, Serverless, Lambda, RDS, Postman
+Lab Topology Step-by-step Create IAM role for allow configuration Create Database table with DynamoDB Create AWS API Gateway service Create Lambda function Testing CRUD with postman Verify A. Create IAM role First step is create IAM role to allow Lambda function to call AWS services, for it you can follow guide bellow :
+Login to your AWS console, search and chose IAM menu Choose Roles and create role Choose AWS Services -&amp;gt; Lambda and Next And you can see menu bellow For integrate lambda with RDS &amp;amp; cloudwatch, wee need filter &amp;amp; checklist cloudwatchfullaccess And the last one, search dynamodb and checklist full access permissions Add rolename Verify you already added two roles for it, and create role B.</description>
+    </item>
+    
+    <item>
+      <title>6. Install OpenStack AIO with Kolla-Ansible in Ubuntu</title>
+      <link>/posts/install-openstack-aio-with-kolla-ansible-in-ubuntu/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/install-openstack-aio-with-kolla-ansible-in-ubuntu/</guid>
+      <description>Specification : OpenStack Yoga, Kolla-ansible, Ubuntu, All-in-one
+Lab Topology Specs Value OS Ubuntu 20.04 vCPU 4 RAM 8GB Storage 1 /dev/vda 40 GB Storage 2 /dev/vdb 40 GB Before start Makesure your environment already here :
+Installation Update Environment sudo apt update Create VG for cinder-backend (volume instances) pvcreate /dev/vdb vgcreate cinder-volumes /dev/vdb vgs Install depedencies sudo apt install python3-dev libffi-dev gcc libssl-dev python3-venv Create virtual environment (venv) for openstack installation python3 -m venv openstack-yoga source openstack-yoga/bin/activate Install Pip &amp;amp; Ansible For openstack yoga version, you need install ansible version like bellow</description>
+    </item>
+    
+    <item>
+      <title>7. Openstack usages (create network, image, instaces, etc.)</title>
+      <link>/posts/openstack-usages-create-network-image-instaces-etc./</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/openstack-usages-create-network-image-instaces-etc./</guid>
+      <description>Specification : openstack, internal &amp;amp; external networks, flavor, images, instances, key, security groups
+Summary step Create external network Create router Create internal network Add internal network to router Create images Create flavor Create Instances &amp;amp; key Add floating IP Create security groups Add SG to instances Verify VM connectivity Step 1 by 1 1. Create external network Goto admin pages, and please follow guide correctly
+Make Physical Network use physnet1</description>
+    </item>
+    
+    <item>
+      <title>8. Deploy Magmacore on AWS with IaaS &#43; OpenStack for AGW (Lab) - Part1</title>
+      <link>/posts/deploy-magmacore-on-aws-with-iaas-&#43;-openstack-for-agw-lab-part1/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/deploy-magmacore-on-aws-with-iaas-&#43;-openstack-for-agw-lab-part1/</guid>
+      <description>Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS
+Lab Diagram Summary steps Create VM Deployer (EC2) Install terraform &amp;amp; others depedencies Setup &amp;amp; Deploy Magma orchestrator Create AGW VM on openstack Install &amp;amp; connecting to Magma orchestrator Verify connected Prerequisites AWS Account Public Domain OpenStack cluster (optional) Can change using others platform (KVM, Virtualbox, or others.) A. Deploy Magma Orchestrator 1. Setup AWS IAM Create Users and use administrator permission access</description>
+    </item>
+    
+    <item>
+      <title>9. Integrate Magmacore with eNodeB &#43; UE Simulator (srsRAN) - Part2</title>
+      <link>/posts/integrate-magmacore-with-enodeb-&#43;-ue-simulator-srsran-part2/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/integrate-magmacore-with-enodeb-&#43;-ue-simulator-srsran-part2/</guid>
+      <description>Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS
+Lab Diagram Will update soon immediately</description>
+    </item>
+    
+    <item>
+      <title>10. Lab P4-INT (In-band network telemetry) using ONOS and eBPF</title>
+      <link>/posts/lab-p4-int-in-band-network-telemetry-with-onos-from-scratch/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/lab-p4-int-in-band-network-telemetry-with-onos-from-scratch/</guid>
+      <description>Specification : In-band Network Telemetry, ONOS, P4, eBPF, XDP
+Detailed Lab Diagram General Lab Diagram Summary steps Install all depedencies Install all packages needed Running ONOS Running Mininet with BMv2 Running INT Apps Running Parser, XDP &amp;amp; eBPF Adding Data to Grafana Verify System requirements Ubuntu 18.04 RAM = 8 GB (Prefer 16GB) vCPU = 4 (Prefer 8) Root user Preparation Make sure kernel &amp;amp; version of ubuntu like bellow, you can use above version, but bellow already tested.</description>
+    </item>
+    
+    <item>
+      <title>11. Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi</title>
+      <link>/posts/deploy-osm-mano-onboarding-vnf-in-openstsack-nfvi/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/deploy-osm-mano-onboarding-vnf-in-openstsack-nfvi/</guid>
+      <description>Specification : OpenStack, OSM, NFV, MANO, VNF Onboarding
+NFV-MANO Lab Architecture Specs Value OS Ubuntu 20.04 vCPU 4 RAM 8GB Storage 40 GB Requirements Openstack environment (Check installation on http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/) Connectivity between Openstack &amp;amp; OSM Summary Steps Install OSM Add Openstack (NFVi) to OSM MANO via VIM Preparing images, network, keypair, security groups on openstack (day-0) Creating &amp;amp; Onboarding VNF Packages Verify &amp;amp; testing This my VM for OSM 1.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/resume/</link>
+      <pubDate>Thu, 18 Jun 2020 22:45:06 +0200</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>M. LUTHFI AS SYAFII E-Mail: ashafingilutfi@gmail.com Website: https://luthfi.dev LinkedIn: https://linkedin.com/in/muhammadluthfias/ GitHub: https://github.com/assyafii/ Hello!, I&amp;rsquo;m M. Luthfi
+Cloud Engineer &amp;amp; Highly motivated to learn something new. interested in Cloud, Telco, DevSecOps, Infrastructure especially about Cloud Native (Kubernetes, Istio, Grafana, etc), 5G Cloud Native and more.
+Experiences Lead of Research Team, PT. Boer Technology (Btech)
+March 2022 – Present
+Conduct &amp;amp; Manage team to handle all research backlog Manage technical research request by anothers team Work together with dev team, build Yuyu product (Openstack billing system) Build DevSecOps production environment for internal Team Leader, PT.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Thu, 18 Jun 2020 22:45:06 +0200</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Hello,
+Call me Luthfi &amp;amp; nice to meet you all, this is a personal website that contains my learning summaries, stories and more.
+I got the principle of continuous learning at my current company, namely Btech.id, because nothing is impossible as long as we try.
+مَنْ جَدَّ وَجَدَ &amp;amp; mach weiter so, du kannst
+That&amp;rsquo;s just a little about me, Thank you :)</description>
+    </item>
+    
+  </channel>
+</rss>

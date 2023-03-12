@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : OpenStack, OSM, NFV, MANO, VNF Onboarding
+NFV-MANO Lab Architecture Specs Value OS Ubuntu 20.04 vCPU 4 RAM 8GB Storage 40 GB Requirements Openstack environment (Check installation on http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/) Connectivity between Openstack &amp;amp; OSM Summary Steps Install OSM Add Openstack (NFVi) to OSM MANO via VIM Preparing images, network, keypair, security groups on openstack (day-0) Creating &amp;amp; Onboarding VNF Packages Verify &amp;amp; testing This my VM for OSM 1." />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/deploy-osm-mano-onboarding-vnf-in-openstsack-nfvi/" />
+
+
+    <title>
+        
+            11. Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="11. Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi">
+<meta itemprop="description" content="Specification : OpenStack, OSM, NFV, MANO, VNF Onboarding
+NFV-MANO Lab Architecture Specs Value OS Ubuntu 20.04 vCPU 4 RAM 8GB Storage 40 GB Requirements Openstack environment (Check installation on http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/) Connectivity between Openstack &amp; OSM Summary Steps Install OSM Add Openstack (NFVi) to OSM MANO via VIM Preparing images, network, keypair, security groups on openstack (day-0) Creating &amp; Onboarding VNF Packages Verify &amp; testing This my VM for OSM 1."><meta itemprop="datePublished" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="625"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="11. Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi"/>
+<meta name="twitter:description" content="Specification : OpenStack, OSM, NFV, MANO, VNF Onboarding
+NFV-MANO Lab Architecture Specs Value OS Ubuntu 20.04 vCPU 4 RAM 8GB Storage 40 GB Requirements Openstack environment (Check installation on http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/) Connectivity between Openstack &amp; OSM Summary Steps Install OSM Add Openstack (NFVi) to OSM MANO via VIM Preparing images, network, keypair, security groups on openstack (day-0) Creating &amp; Onboarding VNF Packages Verify &amp; testing This my VM for OSM 1."/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2022-01-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        3 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/deploy-osm-mano-onboarding-vnf-in-openstsack-nfvi/"><ol start="11">
+<li>Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : OpenStack, OSM, NFV, MANO, VNF Onboarding</p>
+</blockquote>
+<h2 id="nfv-mano-lab-architecture"><strong>NFV-MANO Lab Architecture</strong></h2>
+<p><img src="./images/osm-nfv.png" alt="osm-lab"></p>
+<p> </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Specs</th>
+<th style="text-align:center">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">OS</td>
+<td style="text-align:center">Ubuntu 20.04</td>
+</tr>
+<tr>
+<td style="text-align:center">vCPU</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">RAM</td>
+<td style="text-align:center">8GB</td>
+</tr>
+<tr>
+<td style="text-align:center">Storage</td>
+<td style="text-align:center">40 GB</td>
+</tr>
+</tbody>
+</table>
+<h3 id="requirements"><strong>Requirements</strong></h3>
+<ol>
+<li><strong>Openstack environment</strong> (Check installation on <a href="http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/">http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/</a>)</li>
+<li><strong>Connectivity between Openstack &amp; OSM</strong></li>
+</ol>
+<p> </p>
+<hr>
+<p> </p>
+<h3 id="summary-steps"><strong>Summary Steps</strong></h3>
+<ol>
+<li>Install OSM</li>
+<li>Add Openstack (NFVi) to OSM MANO via VIM</li>
+<li>Preparing images, network, keypair, security groups on openstack (day-0)</li>
+<li>Creating &amp; Onboarding VNF Packages</li>
+<li>Verify &amp; testing</li>
+</ol>
+<p> </p>
+<h3 id="this-my-vm-for-osm"><strong>This my VM for OSM</strong></h3>
+<p><img src="./images/vmku.png" alt="osm-lab"></p>
+<h3 id="1-add-regular-user"><strong>1. Add regular user</strong></h3>
+<p>If your VM not have regular/ubuntu user, please add first because for installation later.</p>
+<pre tabindex="0"><code>adduser ubuntu
+usermod -aG sudo ubuntu
+su ubuntu
+cd ~
+</code></pre><p><img src="./images/user.png" alt="osm-lab"></p>
+<h3 id="2-download--install-osm-packages"><strong>2. Download &amp; Install OSM Packages</strong></h3>
+<p>This steps all packages will installed automatically with 1 command, and OSM Component running as container/POD on top off Kubernetes.</p>
+<pre tabindex="0"><code>wget https://osm-download.etsi.org/ftp/osm-12.0-twelve/install_osm.sh
+chmod +x install_osm.sh
+./install_osm.sh 
+</code></pre><p><strong>To continue installation, please press Y</strong>
+This installation takes 15-20 minutes, let&rsquo;s drink coffee first hehe.</p>
+<p><img src="./images/install.png" alt="osm-lab"></p>
+<p>For more detail about optional installation, you can from official document : <a href="https://osm.etsi.org/docs/user-guide/latest/03-installing-osm.html">https://osm.etsi.org/docs/user-guide/latest/03-installing-osm.html</a></p>
+<h3 id="3-verification-after-installation"><strong>3. Verification after installation</strong></h3>
+<h4 id="installation-success"><strong>Installation success</strong></h4>
+<p>Make sure your installation like bellow :</p>
+<p><img src="./images/success.png" alt="osm-lab"></p>
+<h4 id="pod-status"><strong>POD Status</strong></h4>
+<pre tabindex="0"><code>kubectl get pod -A
+kubectl get svc -A
+</code></pre><p><img src="./images/pod.png" alt="osm-lab"></p>
+<h4 id="osm-dashboard"><strong>OSM Dashboard</strong></h4>
+<p>Open your OSM Dashboard with External IP from SVC, above steps.</p>
+<p><img src="./images/dashboard1.png" alt="osm-lab">
+<img src="./images/dashboard2.png" alt="osm-lab"></p>
+<h3 id="4-open-your-openstack"><strong>4. Open Your Openstack</strong></h3>
+<p>Before add Openstack to MANO, we need understand VIM URL (Openstack URL), in this case openstack using keystone/identity services using port 5000</p>
+<pre tabindex="0"><code>Our VIM URL : http://172.12.12.254:5000/v3/
+</code></pre><p><img src="./images/neutron.png" alt="osm-lab">
+<img src="./images/neutron2.png" alt="osm-lab"></p>
+<h3 id="5-add-openstack-nfvi-to-mano-vim"><strong>5. Add Openstack NFVi to MANO (VIM)</strong></h3>
+<p><strong>VIM</strong> is one of MANO component, this function for handle nfvi like openstack, vmware, cloud, and others.</p>
+<h4 id="add-openstack-to-vim-accounts-like-bellow">Add Openstack to VIM Accounts, like bellow:</h4>
+<p><img src="./images/vim1.png" alt="osm-lab"></p>
+<h4 id="write-about-your-openstack-nfvi-information">Write about your openstack (NFVi) information</h4>
+<ol>
+<li><strong>Name</strong> : your VIM Account name</li>
+<li><strong>Type</strong> : Your NFVi type</li>
+<li><strong>VIM URL</strong> : Your openstack keystone API, (check above)</li>
+<li><strong>VIM Username</strong> : Your openstack user</li>
+<li><strong>VIM Password</strong> : Your openstack password</li>
+<li><strong>VIM Project/Tenant</strong> : Your openstack project will use for VNF</li>
+<li><strong>Config</strong> : This section you need if you using HTTP for connection &amp; use floating IP for VNF management later.</li>
+</ol>
+<p><img src="./images/vim2.png" alt="osm-lab"></p>
+<h4 id="make-sure-your-nfvi-connected-to-mano">Make sure your NFVi connected to MANO</h4>
+<p><img src="./images/vim3.png" alt="osm-lab"></p>
+<h3 id="6-preparing-openstack-environment-day-0"><strong>6. Preparing openstack environment (Day-0)</strong></h3>
+<p>This section we prepared first images &amp; network. Actually depends from your <strong>VNF Packages</strong> will use <strong>existing</strong> resources (network, keypair) or <strong>created new</strong> one.</p>
+<h4 id="a-internal-network">A. Internal Network</h4>
+<p>In this case, we create new internal network named <strong>mgmt</strong> for network management VNF &amp; use <strong>floating IP</strong> for external connection, need connect to external network with <strong>router</strong>.</p>
+<p><img src="./images/mgmt.png" alt="osm-lab"></p>
+<h4 id="b-images">B. Images</h4>
+<p><img src="./images/images.png" alt="osm-lab"></p>
+<h4 id="c-security-groups">C. Security Groups</h4>
+<p><img src="./images/securityg.png" alt="osm-lab"></p>
+<hr>
+<p> </p>
+<h3 id="understanding-about-vnf--ns-packages-in-this-lab"><strong>Understanding about VNF &amp; NS Packages in this Lab</strong></h3>
+<p><img src="./images/vnfd.png" alt="osm-lab"></p>
+<p>Create <strong>VNF &amp; NS Packages</strong> is preety complex to understand, because here named of VM (Virtual Machines) not a VNF again but vDU
+(Deployment Unit) &amp; others complex term.</p>
+<p>So to simply this, we created <strong>simple VNF Packages</strong> with 1 vDU (VM), and <strong>create NS Packages</strong> (Network service) for connect <strong>eth0</strong> to mgmt network &amp; <strong>eth1</strong> to inside network.</p>
+<h4 id="meaning">Meaning</h4>
+<ol>
+<li><strong>vDPU</strong> (Virtual Deployment Unit)</li>
+<li><strong>VNFD</strong> (Virtual Network Function Descriptor)</li>
+<li><strong>NSD</strong> (Network Service Descriptor)</li>
+<li><strong>VLD</strong> (Virtual Link Descriptor)</li>
+<li><strong>CP</strong> (Connection Point)</li>
+<li><strong>ICP &amp; ECP</strong> (I=Internal, E=External)</li>
+<li><strong>NST</strong> (Network Slice Template)</li>
+<li>And many more.</li>
+</ol>
+<p>If you interest to understand more about VNFD, NSD &amp; NST you can check on official OSM : <a href="https://osm.etsi.org/docs/user-guide/latest/05-osm-usage.html">https://osm.etsi.org/docs/user-guide/latest/05-osm-usage.html</a></p>
+<p> </p>
+<hr>
+<h3 id="7-upload-vnf-packages"><strong>7. Upload VNF Packages</strong></h3>
+<p>Download simple VNF Packages <strong>here</strong> : <a href="https://github.com/assyafii/vnf-example-packages">https://github.com/assyafii/vnf-example-packages</a></p>
+<h4 id="first-upload-vnf-packages">First, upload VNF packages</h4>
+<p><img src="./images/vnf.png" alt="osm-lab"></p>
+<h4 id="then-upload-ns-packages">Then, upload NS packages</h4>
+<p><img src="./images/ns.png" alt="osm-lab"></p>
+<h3 id="8-onboarding-packages"><strong>8. Onboarding Packages</strong></h3>
+<p>Just click instantiate, OSM Will created VM &amp; Others from packages.</p>
+<p><img src="./images/instantiate.png" alt="osm-lab"></p>
+<h4 id="choose-your-vim-accounts-will-deployed">Choose your VIM Accounts will deployed</h4>
+<p><img src="./images/instantiate2.png" alt="osm-lab"></p>
+<h4 id="wait-for-it">Wait for it</h4>
+<p><img src="./images/onboarding_wait.png" alt="osm-lab"></p>
+<h4 id="yeay-vnf--ns-success-onboarding">Yeay, VNF &amp; NS Success onboarding</h4>
+<p><img src="./images/onboarding_success.png" alt="osm-lab"></p>
+<h3 id="9-verification"><strong>9. Verification</strong></h3>
+<p>This step you can verify from NFVi (Openstack) side</p>
+<h4 id="you-can-see-here-vnf-already-created--have-floating-ip">You can see here, VNF Already created &amp; have Floating IP</h4>
+<p><img src="./images/openstack_verify.png" alt="osm-lab"></p>
+<h4 id="ns-already-created-also">NS Already created also</h4>
+<p><img src="./images/openstack_network.png" alt="osm-lab"></p>
+<h4 id="you-can-access-using-floating-ip--password-used-cloud_initcfg-defined-before-in-vnfd">You can access using Floating IP &amp; Password used cloud_init.cfg defined before in vnfd</h4>
+<p><img src="./images/openstack_access.png" alt="osm-lab"></p>
+<h3 id="all-official-packages"><strong>All Official Packages</strong></h3>
+<p>You can check all references packages (VNFD, NSD, NST) here for use cases :</p>
+<p><a href="https://osm.etsi.org/gitlab/vnf-onboarding/osm-packages">https://osm.etsi.org/gitlab/vnf-onboarding/osm-packages</a></p>
+<h3 id="references"><strong>References</strong></h3>
+<ul>
+<li><a href="https://osm.etsi.org/docs/user-guide/latest/">https://osm.etsi.org/docs/user-guide/latest/</a></li>
+<li><a href="https://codilime.com/blog/how-to-configure-vnfs-using-a-virtual-network-function-descriptor/">https://codilime.com/blog/how-to-configure-vnfs-using-a-virtual-network-function-descriptor/</a></li>
+</ul>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        625 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2022-01-01 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/lab-p4-int-in-band-network-telemetry-with-onos-from-scratch/">
+                <span class="button__icon">←</span>
+                <span class="button__text">10. Lab P4-INT (In-band network telemetry) using ONOS and eBPF</span>
+              </a>
+            </span>
+          
+
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>

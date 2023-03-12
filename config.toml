@@ -1,0 +1,76 @@
+baseurl = "/"
+theme = "hello-friend-ng"
+languageCode = "en-us"
+
+
+title = "M. Luthfi As Syafii"
+
+paginate = 100
+enableRobotsTXT = true
+enableGitInfo   = false
+enableEmoji     = true
+enableMissingTranslationPlaceholders = false
+disableRSS     = false
+disableSitemap = false
+disable404     = false
+disableHugoGeneratorInject = false
+
+[taxonomies]
+  tag = "tags"
+  
+[params]
+  dateform = "Jan 2, 2006"
+  dateformShor = "Jan 2"
+  dateformNum = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04 -0700"
+
+  # Metadata mostly used in document's head
+  DefaultContentLanguage = "en"
+  description = "Personal Website"
+  keywords = "P4, SDN, Cloud, Openstack, etc."
+  images = [""]
+
+  homeSubtitle = ""
+  feedUrl = ""
+
+  # Directory name of your blog content (default is `content/posts`)
+  contentTypeName = "posts"
+  # Default theme "light" or "dark"
+  defaultTheme = "light"
+
+  [params.logo]
+    logoText = "luthfi.dev"
+    logoHomeLink = "/"
+
+  # Social icons
+  [[params.social]]
+    name = "email"
+    url = "mailto:ashafingilutfi@gmail.com"
+
+  [[params.social]]
+    name = "twitter"
+    url = "https://twitter.com/assyafiii"
+
+  [[params.social]]
+    name = "youtube"
+    url = "https://www.youtube.com/@m.luthfiassyafii6751/videos"
+
+  [[params.social]]
+    name = "linkedin"
+    url = "https://www.linkedin.com/in/muhammadluthfias/"
+
+[menu]
+  [[menu.main]]
+    identifier = "Docs"
+    name = "Documentation"
+    url = "/posts"
+
+  [[menu.main]]
+    identifier = "resume"
+    name = "Resume"
+    url = "/resume"
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"

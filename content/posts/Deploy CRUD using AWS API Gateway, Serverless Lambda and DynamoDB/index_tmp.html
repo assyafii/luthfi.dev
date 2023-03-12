@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>index.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<hr>
+<blockquote>
+<p>Specification : AWS, API Gateway, Serverless, Lambda, RDS, Postman</p>
+</blockquote>
+<h3 id="lab-topology"><strong>Lab Topology</strong></h3>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/aws-lambda-diagram.png" alt="aws-lambda-diagram"></p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/aws-lambda-detail.png" alt="aws-lambda-detail"></p>
+<p> </p>
+<h4 id="step-by-step">Step-by-step</h4>
+<ul>
+<li>Create IAM role for allow configuration</li>
+<li>Create Database table with DynamoDB</li>
+<li>Create AWS API Gateway service</li>
+<li>Create Lambda function</li>
+<li>Testing CRUD with postman</li>
+<li>Verify</li>
+</ul>
+<h4 id="a-create-iam-role">A. Create IAM role</h4>
+<p>First step is create IAM role to allow Lambda function to call AWS services, for it you can follow guide bellow :</p>
+<ol>
+<li>Login to your AWS console, search and chose IAM menu</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws1.png" alt="aws1"></p>
+<ol start="2">
+<li>Choose <code>Roles</code> and create <code>role</code></li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws2.png" alt="aws2"></p>
+<ol start="3">
+<li>Choose AWS Services -&gt; Lambda and Next</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws3.png" alt="aws3"></p>
+<ol start="4">
+<li>
+<p>And you can see menu bellow
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws4.png" alt="aws4"></p>
+</li>
+<li>
+<p>For integrate lambda with RDS &amp; cloudwatch, wee need filter &amp; checklist <code>cloudwatchfullaccess</code>
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws5.png" alt="aws5"></p>
+</li>
+<li>
+<p>And the last one, search <code>dynamodb</code> and checklist full access permissions
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws6.png" alt="aws6"></p>
+</li>
+<li>
+<p>Add rolename
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws7.png" alt="aws7"></p>
+</li>
+<li>
+<p>Verify you already added two roles for it, and create role
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws8.png" alt="aws8"></p>
+</li>
+</ol>
+<hr>
+<p> </p>
+<h4 id="b-create-rds-dynamodb-table">B. Create RDS DynamoDB Table</h4>
+<p>Next step we need create database for store data, with step bellow :</p>
+<ol>
+<li>Choose DynamoDB services</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws9.png" alt="aws9"></p>
+<ol start="2">
+<li>Choose Dashboard and create <code>Table</code></li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws10.png" alt="aws10"></p>
+<ol start="3">
+<li>Put table name, you can same with our tutorial use <code>food-aws-serverless</code> and put <code>Partition Key</code> with <code>foodId</code> for indexing like bellow, and create table</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws11.png" alt="aws11"></p>
+<ol start="4">
+<li>You can see table after created</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws12.png" alt="aws12"></p>
+<hr>
+<p> </p>
+<h4 id="c-create-lambda-function">C. Create Lambda Function</h4>
+<ol>
+<li>After create RDS, next create Lambda function to integrate between API Gateway to RDS DynamoDB</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws13.png" alt="aws13"></p>
+<ol start="2">
+<li>Choose <code>Functions</code> and <code>create function</code></li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws14.png" alt="aws14"></p>
+<ol start="3">
+<li>And follow function like bellow and create function</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws15.png" alt="aws15"></p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws16.png" alt="aws16"></p>
+<ol start="4">
+<li>And you can see lambda function has been created, after that we need increase specs of lambda with step bellow. Click <code>configuration &gt; Edit</code>, Increase value of Memory and Storage and save.</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws17.png" alt="aws17">
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws18.png" alt="aws18"></p>
+<ol start="5">
+<li>And <code>Important</code> step is create <code>lambda function</code> for CRUD, choose code &gt; edit lambda_function.py &gt; copas code from bellow &gt; and last deploy</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws19.png" alt="aws19"></p>
+<p><code>lambda_function.py</code></p>
+<pre class="hljs"><code><div>import boto3
+import json
+from botocore.vendored import requests
+
+from custom_encoder import CustomEncoder
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+dynamodbTableName = 'food-aws-serverless'
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table(dynamodbTableName)
+
+getMethod = 'GET'
+postMethod = 'POST'
+patchMethod = 'PATCH'
+deleteMethod = 'DELETE'
+healthPath = '/health'
+foodPath = '/food'
+
+def lambda_handler(event, context):
+    logger.info(event)
+    httpMethod = event['httpMethod']
+    path = event['path']
+    if httpMethod == getMethod and path == healthPath:
+        response = buildResponse(200)
+    elif httpMethod == getMethod and path == foodPath:
+        response = getFood(event['queryStringParameters']['foodId'])
+    elif httpMethod == postMethod and path == foodPath:
+        response = saveFood(json.loads(event['body']))
+    elif httpMethod == patchMethod and path == foodPath:
+        requestBody = json.loads(event['body'])
+        response = modifyFood(requestBody['foodId'], requestBody['updateKey'], requestBody['updateValue'])
+    elif httpMethod == deleteMethod and path == foodPath:
+        requestBody = json.loads(event['body'])
+        response = deleteFood(requestBody['foodId'])
+    else:
+        response = buildResponse(404, 'Sorry, Not Found')
+    
+    return response
+
+def getFood(foodId):
+    try:
+        response = table.get_item(
+            Key={
+                'foodId': foodId
+            }
+        )
+        if 'Item' in response:
+            return buildResponse(200, response['Item'])
+        else:
+            return buildResponse(404, {'Message' : 'FoodId: %s not found' % foodId})
+    except:
+        logger.exception('Do your custom error handling here, I am just gonna log it out there!')
+
+def saveFood(requestBody):
+    try:
+        table.put_item(Item=requestBody)
+        body = {
+            'Operation' : 'SAVE',
+            'Message' : 'SUCCESS',
+            'Item' : requestBody
+        }
+        return buildResponse(200, body)
+    except:
+        logger.exception('Do your custom error handling here, I am just gonna log it out there!')
+
+def modifyFood(foodId, updateKey, updateValue):
+    try:
+        response = table.update_item(
+            Key={
+                'foodId': foodId
+            },
+            UpdateExpression='set %s = :value' % updateKey,
+            ExpressionAttributeValues={
+                ':value': updateValue
+            },
+            ReturnValues='UPDATED_NEW'
+        )
+        body = {
+            'Operation': 'UPDATE',
+            'Message': 'SUCCESS',
+            'UpdatedAttrebutes': response
+        }
+        return buildResponse(200, body)
+    except:
+        logger.exception('Do your custom error handling here, I am just gonna log it out there!')
+
+def deleteFood(foodId):
+    try:
+        response = table.delete_item(
+            Key={
+                'foodId': foodId
+            },
+            ReturnValues='ALL_OLD'
+        )
+        body = {
+            'Operation': 'DELETE',
+            'Message': 'SUCCESS',
+            'UpdatedAttrebutes': response
+        }
+        return buildResponse(200, body)
+    except:
+        logger.exception('Do your custom error handling here, I am just gonna log it out there!')
+
+
+
+def buildResponse(statusCode, body=None):
+    response = {
+        'statusCode' : statusCode,
+        'headers' : {
+            'Content-Type': 'application/json',
+            'Access-Controll-Allow-Origin': '*'
+        }
+    }
+    if body is not None:
+        response['body'] = json.dumps(body, cls=CustomEncoder)
+    return response
+
+</div></code></pre>
+<ol start="6">
+<li>And last on is create new file named <code>custom_encoder.py</code> &gt; put code bellow &gt; and <code>deploy</code> again.</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws20.png" alt="aws20"></p>
+<p><code>custom_encoder.py</code></p>
+<pre class="hljs"><code><div>import json
+from decimal import Decimal
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+
+        return json.JSONEncoder.default(self, obj)
+</div></code></pre>
+<p> </p>
+<hr>
+<p> </p>
+<h4 id="d-create-aws-api-gateway">D. Create AWS API Gateway</h4>
+<p>Next is create Rest API gateway, to interact between and user &amp; AWS services, for more you can follow bellow step :</p>
+<ol>
+<li>Choose <code>AWS API Gateway</code> menu</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws21.png" alt="aws21"></p>
+<ol start="2">
+<li>Choose <code>Public REST API</code> and <code>build</code></li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws22.png" alt="aws22"></p>
+<ol start="3">
+<li>Click REST &gt; New API and put API name</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws23.png" alt="aws23"></p>
+<ol start="4">
+<li>And next <code>create Resource</code> for place are API Method, bellow for detail structure :</li>
+</ol>
+<pre class="hljs"><code><div>1. Resource /health
+Method GET
+
+2. Resource /food
+Method GET, POST, PATCH, DELETE
+
+3. Resource /foods (optional, not important)
+Method GET, POST, PATCH, DELETE
+</div></code></pre>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws24.png" alt="aws24"></p>
+<ol start="4">
+<li>Input <code>Resource name</code>, <code>Resource path</code> and checklist Enable API Gateway</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws25.png" alt="aws25"></p>
+<ol start="5">
+<li>And create also for /food resource like above</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws27.png" alt="aws27"></p>
+<ol start="6">
+<li>After create <code>Resource</code>, next create <code>Method</code> for every resource. Click Resource name, for example <code>/health</code> &gt; Create Method</li>
+</ol>
+<pre class="hljs"><code><div>1. Resource /health
+Method GET
+
+2. Resource /food
+Method GET, POST, PATCH, DELETE
+
+3. Resource /foods (optional, not important)
+Method GET, POST, PATCH, DELETE
+</div></code></pre>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws29.png" alt="aws29"></p>
+<ol start="7">
+<li>Chose Method, for example <code>GET</code> and click OK</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws30.png" alt="aws30"></p>
+<ol start="8">
+<li>Checklist <code>Lambda Function</code> &gt; Proxy integration &gt; and chose <code>Lambda Function</code> previously created &gt; save</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws31.png" alt="aws31"></p>
+<ol start="9">
+<li>Click OK for continue, and REPEAT create Method for <code>every resource</code> like it and follow structure</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws32.png" alt="aws32"></p>
+<ol start="10">
+<li>After all <code>Method and Resource</code> has been created, last step is <code>Deploy API</code> like bellow</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws33.png" alt="aws33"></p>
+<ol start="11">
+<li>Create new stage name, for example: <code>prod</code>, and finish you already created API Gateway</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws34.png" alt="aws34"></p>
+<hr>
+<p> </p>
+<h4 id="e-testing--verify-crud">E. Testing &amp; Verify CRUD</h4>
+<ol>
+<li>Before testing, you need download <code>Postman Application</code> for testing API, download on : https://www.postman.com/downloads/</li>
+<li>First step is copy API Endpoint in APIs menu to access from public internet</li>
+</ol>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws36.png" alt="aws36"></p>
+<h5 id="get-option-health-check">GET Option (Health Check)</h5>
+<p>To check API status reached or not, with status 200 OK</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws37.png" alt="aws37"></p>
+<h5 id="post-option">POST Option</h5>
+<p>To Put new database to RDS via Json format file (key-value), bellow example to add data :</p>
+<pre class="hljs"><code><div>{
+    &quot;foodId&quot;: &quot;001&quot;,
+    &quot;name&quot;: &quot;Banana&quot;,
+    &quot;price&quot;: &quot;500&quot;
+}
+</div></code></pre>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws38.png" alt="aws38">
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws39.png" alt="aws39"></p>
+<p>And you can see result success POST in DynamoDB table menu :</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws40.png" alt="aws40"></p>
+<h5 id="delete-option">DELETE Option</h5>
+<p>For delete database on RDS you can use delete option with index ID (foodId) like bellow</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws41.png" alt="aws41"></p>
+<p>And you can see after deleted foodId = 002 on RDS Table</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws42.png" alt="aws42"></p>
+<h5 id="get-option">GET Option</h5>
+<p>To check detail table by foodId</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws43.png" alt="aws43"></p>
+<h5 id="patch-option">PATCH Option</h5>
+<p>Patch you can use for update about value/key, bellow example for update banana price, from 500 to 99999</p>
+<p><img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws44.png" alt="aws44">
+<img src="file:///Users/luthfi/Documents/assyafii.com/content/docs/Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS + OpenStack/docs/aws45.png" alt="aws45"></p>
+<hr>
+<p> </p>
+<h4 id="reference">Reference</h4>
+<ul>
+<li>Felix Yu Channel : https://www.youtube.com/watch?v=9eHh946qTIk&amp;list=LL&amp;index=32&amp;t=159s</li>
+</ul>
+
+</body>
+</html>

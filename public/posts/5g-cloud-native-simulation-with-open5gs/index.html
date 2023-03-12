@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher
+Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
+kubectl label namespace open5gs istio-injection=enabled Install Addons packages
+cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus." />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/5g-cloud-native-simulation-with-open5gs/" />
+
+
+    <title>
+        
+            4. 5G Cloud Native Simulation with Open5Gs :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="4. 5G Cloud Native Simulation with Open5Gs">
+<meta itemprop="description" content="Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher
+Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
+kubectl label namespace open5gs istio-injection=enabled Install Addons packages
+cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus."><meta itemprop="datePublished" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="wordCount" content="521"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="4. 5G Cloud Native Simulation with Open5Gs"/>
+<meta name="twitter:description" content="Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher
+Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
+kubectl label namespace open5gs istio-injection=enabled Install Addons packages
+cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus."/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-01-02 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        3 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/5g-cloud-native-simulation-with-open5gs/"><ol start="4">
+<li>5G Cloud Native Simulation with Open5Gs</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher</p>
+</blockquote>
+<h3 id="lab-topology"><strong>Lab Topology</strong></h3>
+<p><img src="./5Glab.png" alt="5g-topology"></p>
+<h4 id="create-namespaces-for-practices">Create Namespaces for practices</h4>
+<pre tabindex="0"><code>kubectl create ns open5gs
+</code></pre><h4 id="install-service-mesh-istio-optional">Install Service mesh Istio (optional)</h4>
+<pre tabindex="0"><code>curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.12.1
+export PATH=$PWD/bin:$PATH
+istioctl install --set profile=demo -y
+</code></pre><p>Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:</p>
+<pre tabindex="0"><code>kubectl label namespace open5gs istio-injection=enabled
+</code></pre><p><strong>Install Addons packages</strong></p>
+<pre tabindex="0"><code>cd ~/istio-1.12.1/samples/addons
+kubectl apply -f prometheus.yaml #for data sources monitoring
+kubectl apply -f kiali.yaml #for dashboard visualization istio
+kubectl apply -f jaeger.yaml #for tracing log
+kubectl apply -f grafana.yaml #for dashboard monitoring (visualization)
+</code></pre><h4 id="install-rancher-optional">Install Rancher (optional)</h4>
+<pre tabindex="0"><code>helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+kubectl create namespace cattle-system
+</code></pre><p><strong>Install crds Cert Manager</strong></p>
+<pre tabindex="0"><code>kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.1/cert-manager.crds.yaml
+</code></pre><p><strong>Add the Jetstack Helm repository</strong></p>
+<pre tabindex="0"><code>helm repo add jetstack https://charts.jetstack.io
+</code></pre><p><strong>Update your local Helm chart repository cache</strong></p>
+<pre tabindex="0"><code>helm repo update
+</code></pre><p><strong>Install the cert-manager Helm chart</strong></p>
+<pre tabindex="0"><code>helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.5.1
+</code></pre><hr>
+<pre tabindex="0"><code>kubectl get pods --namespace cert-manager
+</code></pre><h4 id="install-rancher-with-helm">Install Rancher with Helm</h4>
+<pre tabindex="0"><code>helm install rancher rancher-latest/rancher \
+  --namespace cattle-system \
+  --set hostname=rancher.my.org \
+  --set replicas=3
+</code></pre><p><strong>Wait for Rancher to be rolled out</strong></p>
+<pre tabindex="0"><code>kubectl -n cattle-system rollout status deploy/rancher
+</code></pre><p><strong>Verify that the Rancher Server is Successfully Deployed</strong></p>
+<pre tabindex="0"><code>kubectl -n cattle-system get deploy rancher
+</code></pre><p><img src="./rancher.png" alt="rancher"></p>
+<h4 id="install-helm">Install HELM</h4>
+<p>We use HELM for automatic deployment in kubernetes.</p>
+<pre tabindex="0"><code>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm version    
+</code></pre><h4 id="clone-repo-for-simulation">Clone repo for simulation</h4>
+<pre tabindex="0"><code>cd ~
+git clone https://bitbucket.org/infinitydon/opensource-5g-core-service-mesh.git
+git clone https://github.com/Gradiant/openverso-charts.git
+</code></pre><h4 id="configure-amf-services-optional">Configure AMF Services (optional)</h4>
+<p>This services if you want use NodePort &amp; can access from external cluster.</p>
+<pre tabindex="0"><code>cd ~/opensource-5g-core-service-mesh/helm-chart
+sudo nano templates/amf-deploy.yaml
+</code></pre><p>Uncomment in AMF service amf-open5gs-sctp
+<img src="./amf-deploy.png" alt="amf-deploy"></p>
+<h4 id="changed-sd-to-ffffff-in-amf-configmap">Changed sd to ffffff in amf-configmap</h4>
+<pre tabindex="0"><code>nano templates/amf-configmap.yaml
+</code></pre><p><img src="./amf-configmap.png" alt="amf-configmap"></p>
+<h4 id="change-mongodb-configuration">Change mongodb configuration</h4>
+<p>We will use <strong>ROOK Ceph</strong> for persistent volume, need <strong>comment existing persistent volume &amp; add StorageClassName in persistent volume claim</strong>.</p>
+<pre tabindex="0"><code>nano templates/mongodb.yaml
+</code></pre><p><img src="./mongodb.png" alt="mongodb"></p>
+<h4 id="deploy-open5gs-with-helm-chart">Deploy open5gs with helm-chart</h4>
+<pre tabindex="0"><code>cd ~/opensource-5g-core-service-mesh/helm-chart
+helm -n open5gs install -f values.yaml open ./
+</code></pre><h4 id="make-sure-all-pod--services-already-running">Make sure all POD &amp; Services already running</h4>
+<p><img src="./running.png" alt="running"></p>
+<h4 id="register-ue-user-equipment-in-open5gs-dashboard">Register UE (User Equipment in Open5Gs dashboard)</h4>
+<p>Open dashboard use IP webui services <code>10.101.169.188</code></p>
+<pre tabindex="0"><code>Username : admin
+Password : 1423
+</code></pre><p><img src="./login.png" alt="login"></p>
+<p>Register User Equipment (UE) with detail bellow :</p>
+<pre tabindex="0"><code>IMSI : 208930000000001
+Key : 465B5CE8B199B49FAA5F0A2EE238A6BC
+OP : E8ED289DEBA952E4283B54E88E6183CA
+opType: OPC
+apn: internet
+sst: 1
+sd: &#34;ffffff&#34;
+</code></pre><p><img src="./register.png" alt="register"></p>
+<h3 id="configure-ueransim-ue--gnb"><strong>Configure UERANSIM (UE &amp; gNB)</strong></h3>
+<hr>
+<h4 id="install-ueransim-helm-depedency">Install UERANSIM Helm depedency</h4>
+<pre tabindex="0"><code>cd ~
+cd ~/openverso-charts/charts/ueransim
+helm dep update ./
+</code></pre><h4 id="change-value-in-ue">Change value in UE</h4>
+<pre tabindex="0"><code>sudo nano values.yaml
+</code></pre><pre tabindex="0"><code>mcc: &#39;208&#39;
+mnc: &#39;93&#39;
+tac: &#39;7&#39;
+</code></pre><h4 id="change-amf-address-in-gnb">Change AMF Address in gNB</h4>
+<p>You must change address to AMF POD address, check with &lsquo;kubectl get pod -o wide -n open5gs | grep amf&rsquo;</p>
+<p><img src="./amf-address.png" alt="amf-address"></p>
+<pre tabindex="0"><code>sudo nano resources/gnb.yaml
+</code></pre><p><img src="./gnb.png" alt="gnb"></p>
+<h4 id="running-ueransim">Running UERANSIM</h4>
+<pre tabindex="0"><code>helm -n open5gs install -f values.yaml ueransim ./
+kubectl get pod -n open5gs | grep ueransim
+</code></pre><h4 id="verify-logs-ue-connected-to-gnb--amf">Verify Logs UE Connected to gNB &amp; AMF</h4>
+<p><strong>AMF Logs</strong>
+<img src="./amf-log.png" alt="amf-log"></p>
+<p><strong>gNB Logs</strong>
+<img src="./gnb-log.png" alt="gnb-log"></p>
+<p><strong>UE Logs</strong>
+<img src="./ue-log.png" alt="ue-log"></p>
+<h4 id="verify-ping-to-internet-via-rancher-dashboard">Verify ping to Internet via Rancher dashboard</h4>
+<p><strong>UE Container</strong></p>
+<p>Note : Bellow not show reply, because in TAP Interface (debian) not showing reply, we can see tcpdump in UPF POD.</p>
+<pre tabindex="0"><code>ping 8.8.8.8 -I uesimtun0
+</code></pre><p><img src="./ping-ue.png" alt="ue-ping"></p>
+<p><strong>UPF POD</strong></p>
+<p>We can see ICMP request reply, from UE IP Address &amp; Google IP.</p>
+<pre tabindex="0"><code>sudo apt install tcpdump
+tcpdump -i ogstun
+</code></pre><p><img src="./ping-upf.png" alt="upf-ping"></p>
+<h4 id="grafana-dashboard">Grafana Dashboard</h4>
+<p><img src="./grafana.png" alt="grafana"></p>
+<h4 id="istio-kiali-dashboard">Istio Kiali Dashboard</h4>
+<p><img src="./kiali.png" alt="kiali"></p>
+<p> 
+ </p>
+<h4 id="reference-">Reference :</h4>
+<p><a href="https://medium.com/rahasak/5g-core-network-setup-with-open5gs-and-ueransim-cd0e77025fd7">https://medium.com/rahasak/5g-core-network-setup-with-open5gs-and-ueransim-cd0e77025fd7</a></p>
+<p><a href="https://levelup.gitconnected.com/opensource-5g-core-with-service-mesh-bba4ded044fa">https://levelup.gitconnected.com/opensource-5g-core-with-service-mesh-bba4ded044fa</a></p>
+<p><a href="https://github.com/Gradiant/openverso-charts.git">https://github.com/Gradiant/openverso-charts.git</a></p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        521 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2021-01-02 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/deploy-portworx-storage-in-kubernetes/">
+                <span class="button__icon">←</span>
+                <span class="button__text">3. Deploy PortWorx storage in kubernetes</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="/posts/deploy-crud-using-aws-api-gateway-serverless-lambda-and-dynamodb/">
+                <span class="button__text">5. Deploy CRUD using AWS API Gateway, Serverless Lambda and DynamoDB</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>

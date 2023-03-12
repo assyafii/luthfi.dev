@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS
+Lab Diagram Summary steps Create VM Deployer (EC2) Install terraform &amp;amp; others depedencies Setup &amp;amp; Deploy Magma orchestrator Create AGW VM on openstack Install &amp;amp; connecting to Magma orchestrator Verify connected Prerequisites AWS Account Public Domain OpenStack cluster (optional) Can change using others platform (KVM, Virtualbox, or others.) A. Deploy Magma Orchestrator 1. Setup AWS IAM Create Users and use administrator permission access" />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/deploy-magmacore-on-aws-with-iaas-&#43;-openstack-for-agw-lab-part1/" />
+
+
+    <title>
+        
+            8. Deploy Magmacore on AWS with IaaS &#43; OpenStack for AGW (Lab) - Part1 :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="8. Deploy Magmacore on AWS with IaaS &#43; OpenStack for AGW (Lab) - Part1">
+<meta itemprop="description" content="Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS
+Lab Diagram Summary steps Create VM Deployer (EC2) Install terraform &amp; others depedencies Setup &amp; Deploy Magma orchestrator Create AGW VM on openstack Install &amp; connecting to Magma orchestrator Verify connected Prerequisites AWS Account Public Domain OpenStack cluster (optional) Can change using others platform (KVM, Virtualbox, or others.) A. Deploy Magma Orchestrator 1. Setup AWS IAM Create Users and use administrator permission access"><meta itemprop="datePublished" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1250"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="8. Deploy Magmacore on AWS with IaaS &#43; OpenStack for AGW (Lab) - Part1"/>
+<meta name="twitter:description" content="Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS
+Lab Diagram Summary steps Create VM Deployer (EC2) Install terraform &amp; others depedencies Setup &amp; Deploy Magma orchestrator Create AGW VM on openstack Install &amp; connecting to Magma orchestrator Verify connected Prerequisites AWS Account Public Domain OpenStack cluster (optional) Can change using others platform (KVM, Virtualbox, or others.) A. Deploy Magma Orchestrator 1. Setup AWS IAM Create Users and use administrator permission access"/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2022-01-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        6 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/deploy-magmacore-on-aws-with-iaas-&#43;-openstack-for-agw-lab-part1/"><ol start="8">
+<li>Deploy Magmacore on AWS with IaaS + OpenStack for AGW (Lab) - Part1</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : Amazon Web Services, Magmacore, 5G, Cloud, OpenStack, AGW, IaaS</p>
+</blockquote>
+<h2 id="lab-diagram"><strong>Lab Diagram</strong></h2>
+<p><img src="./images/aws-magma-diagram.png" alt="aws-lab"></p>
+<p> 
+ </p>
+<hr>
+<p> </p>
+<h3 id="summary-steps"><strong>Summary steps</strong></h3>
+<ul>
+<li>Create VM Deployer (EC2)</li>
+<li>Install terraform &amp; others depedencies</li>
+<li>Setup &amp; Deploy Magma orchestrator</li>
+<li>Create AGW VM on openstack</li>
+<li>Install &amp; connecting to Magma orchestrator</li>
+<li>Verify connected</li>
+</ul>
+<h3 id="prerequisites"><strong>Prerequisites</strong></h3>
+<ul>
+<li>AWS Account</li>
+<li>Public Domain</li>
+<li>OpenStack cluster (optional)
+<ul>
+<li>Can change using others platform (KVM, Virtualbox, or others.)</li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<h2 id="a-deploy-magma-orchestrator"><strong>A. Deploy Magma Orchestrator</strong></h2>
+<h3 id="1-setup-aws-iam"><strong>1. Setup AWS IAM</strong></h3>
+<p>Create Users and use <strong>administrator</strong> permission access</p>
+<p><img src="./images/1.png" alt="magma-lab"></p>
+<h3 id="2-deploy-terraform-ec2"><strong>2. Deploy terraform EC2</strong></h3>
+<ul>
+<li>VM for deployer you can use ec2 instances or directly from local access AWS IAM.</li>
+<li>In this case, i am using ec2 because to make sure not have connection issue during deploy magma.</li>
+</ul>
+<p><img src="./images/2.png" alt="magma-lab"></p>
+<p>Follow step like bellow, choose ubuntu 20.04
+<img src="./images/3.png" alt="magma-lab"></p>
+<p>Add your <strong>key-pair</strong> for access
+<img src="./images/4.png" alt="magma-lab">
+<img src="./images/5.png" alt="magma-lab"></p>
+<p>Make sure you can access deployer VM
+<img src="./images/6.png" alt="magma-lab"></p>
+<h3 id="3-install-depedency"><strong>3. Install depedency</strong></h3>
+<pre tabindex="0"><code>sudo apt update
+sudo apt install python3-pip
+sudo pip install boto3
+</code></pre><h3 id="4-install-terraform"><strong>4. Install Terraform</strong></h3>
+<p>Use version 1.0.11, tested in this lab</p>
+<pre tabindex="0"><code>wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+echo &#34;deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main&#34; | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update
+sudo apt install terraform=1.0.11
+</code></pre><p><img src="./images/7.png" alt="magma-lab"></p>
+<h3 id="5-install-aws-cli--login"><strong>5. Install AWS CLI &amp; Login</strong></h3>
+<pre tabindex="0"><code>cd ~
+curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34;
+unzip awscliv2.zip
+sudo ./aws/install
+</code></pre><p><img src="./images/11.png" alt="magma-lab"></p>
+<p>Login to your AWS Account using <strong>Access key &amp; secret key</strong>, you can download from when creating user above.</p>
+<p><img src="./images/12.png" alt="magma-lab"></p>
+<h3 id="6-preparation--assemble-certificates"><strong>6. Preparation &amp; Assemble Certificates</strong></h3>
+<p>Clone Magma repository, choose branch and add environment variable <strong>(important)</strong></p>
+<pre tabindex="0"><code>git clone https://github.com/magma/magma
+git checkout -b v1.7.0
+cd magma
+export MAGMA_ROOT=/home/ubuntu/magma
+</code></pre><p><img src="./images/8.png" alt="magma-lab"></p>
+<h5 id="create--generate-secrets">Create &amp; generate secrets</h5>
+<p>Make sure you have <strong>Public Domain (DNS)</strong> because later will use for connection between AGW &amp; Orchestrator</p>
+<pre tabindex="0"><code>mkdir -p ~/secrets/certs
+cd ~/secrets/certs
+
+${MAGMA_ROOT}/orc8r/cloud/deploy/scripts/self_sign_certs.sh orc8r.rsch-lab.com
+${MAGMA_ROOT}/orc8r/cloud/deploy/scripts/create_application_certs.sh orc8r.rsch-lab.com
+</code></pre><p><img src="./images/9.png" alt="magma-lab"></p>
+<p>And next create <code>admin_operator.pfx</code> for authentication to <strong>Magma API</strong></p>
+<pre tabindex="0"><code>openssl pkcs12 -export -inkey admin_operator.key.pem -in admin_operator.pem -out admin_operator.pfx
+ls -lah ~/secrets/certs/
+</code></pre><p><img src="./images/10.png" alt="magma-lab"></p>
+<h3 id="7-magma-orchestrator-installation"><strong>7. Magma orchestrator installation</strong></h3>
+<p>We will use <code>Helm</code> for deploying orchestrator, go to examples directory, you can choose :</p>
+<ul>
+<li><strong>Blue-green</strong> = Build from scratch, you can custom anything</li>
+<li><strong>POC</strong> = Build orchestrator with minimal specs (we choose this because limitation on credit)</li>
+<li><strong>Remote</strong> = Store terraform state on S3 and locked by DyanamoDB Table</li>
+<li><strong>Basic</strong> = Build with standar specification</li>
+</ul>
+<pre tabindex="0"><code>cd ${MAGMA_ROOT}/orc8r/cloud/deploy/terraform/orc8r-helm-aws/examples/
+cd poc 
+</code></pre><p><img src="./images/13.png" alt="magma-lab"></p>
+<h5 id="edit-several-values">Edit several values</h5>
+<p>You just configure values bellow :</p>
+<ul>
+<li><strong>Region orc8r</strong> = Your AWS Region will deploy</li>
+<li><strong>EKS Cluster scaling</strong> = By default on POC use 8, but we increase to 12</li>
+<li><strong>Orchestrator Domain</strong> = Using your public domain</li>
+<li><strong>Region orc8r-app</strong> = Same with orc8r region</li>
+<li><strong>Deployment type</strong> = You can use fwa, federated_fwa or all</li>
+</ul>
+<p><img src="./images/14.png" alt="magma-lab">
+<img src="./images/14_1.png" alt="magma-lab">
+<img src="./images/15.png" alt="magma-lab"></p>
+<h5 id="deploy-orchestrator">Deploy orchestrator</h5>
+<p>This difficult step, if any issue you can check first by <strong>terraform result</strong></p>
+<pre tabindex="0"><code>terraform init 
+terraform apply -target=module.orc8r
+terraform apply -target=module.orc8r-app.null_resource.orc8r_seed_secrets
+terraform apply
+</code></pre><p><img src="./images/16.png" alt="magma-lab">
+<img src="./images/17.png" alt="magma-lab">
+<img src="./images/18.png" alt="magma-lab"></p>
+<p>Make sure all terraform running <strong>smoothly</strong></p>
+<p> </p>
+<h5 id="install-kubectl"><strong>Install kubectl</strong></h5>
+<p>Install for manages kubernetes cluster with CLI</p>
+<pre tabindex="0"><code>sudo apt-get update
+sudo apt-get install -y ca-certificates curl 
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo &#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34; | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+</code></pre><p><img src="./images/kubectl.png" alt="magma-lab"></p>
+<p>Change kubeconfig using <code>kubeconfig_orc8r</code> or you can move this one to <code>./kube/config</code></p>
+<pre tabindex="0"><code>cd ${MAGMA_ROOT}/orc8r/cloud/deploy/terraform/orc8r-helm-aws/examples/poc
+aws eks update-kubeconfig --name orc8r --region us-west-2
+export KUBECONFIG=$(realpath kubeconfig_orc8r)
+</code></pre><p><strong>Verify cluster EKS running</strong></p>
+<pre tabindex="0"><code>kubectl get node
+</code></pre><p><img src="./images/kubectl2.png" alt="magma-lab"></p>
+<p><strong>Verify All POD Orchestrator running</strong></p>
+<p><img src="./images/kubectl3.png" alt="magma-lab"></p>
+<p><strong>Verify All Services Orchestrator</strong>
+<img src="./images/kubectl4.png" alt="magma-lab"></p>
+<h3 id="8-register-nameserver"><strong>8. Register nameserver</strong></h3>
+<p>Register result of <strong>terraform output</strong> to your DNS Provider, like bellow :</p>
+<p><img src="./images/dns.png" alt="magma-lab"></p>
+<h3 id="9-pre-usages-orchestrator"><strong>9. Pre-usages Orchestrator</strong></h3>
+<p>Before using magma orchestrator, we need follow guide bellow first :</p>
+<h5 id="create-an-orchestrator-admin-user">Create an Orchestrator Admin User</h5>
+<p>Just <strong>copy-paste</strong> no change anything</p>
+<pre tabindex="0"><code>kubectl --namespace orc8r exec deploy/orc8r-orchestrator -- \
+  /var/opt/magma/bin/accessc \
+  add-existing -admin -cert /var/opt/magma/certs/admin_operator.pem \
+  admin_operator
+</code></pre><p>Verify success</p>
+<pre tabindex="0"><code>kubectl --namespace orc8r exec deploy/orc8r-orchestrator -- \
+  /var/opt/magma/bin/accessc list-certs
+</code></pre><p><img src="./images/admin.png" alt="magma-lab"></p>
+<h5 id="create-an-orchestrator-nms-user">Create an Orchestrator NMS User</h5>
+<p>This user for access to Magma NMS GUI</p>
+<p><strong>Format Create user</strong></p>
+<pre tabindex="0"><code>kubectl --namespace orc8r exec -it deploy/nms-magmalte -- \
+  yarn setAdminPassword &lt;ORGANIZATION&gt; &lt;USERNAME&gt; &lt;PASSWORD&gt;
+</code></pre><p><strong>1. User for MAGMA-TEST organization</strong></p>
+<pre tabindex="0"><code>kubectl --namespace orc8r exec -it deploy/nms-magmalte -- \
+  yarn setAdminPassword magma-test admin-mgm passwordstrong
+</code></pre><p><strong>2. User for MASTER organization</strong></p>
+<pre tabindex="0"><code>kubectl --namespace orc8r exec -it deploy/nms-magmalte -- \
+  yarn setAdminPassword master admin passwordstrong
+</code></pre><p><img src="./images/nms.png" alt="magma-lab"></p>
+<p> </p>
+<h3 id="10-manages-nms-magma"><strong>10. Manages NMS Magma</strong></h3>
+<p>First, you need login to your domain with format bellow :</p>
+<pre tabindex="0"><code>https://organization-name.nms.yourdomain
+</code></pre><p><img src="./images/login.png" alt="magma-lab"></p>
+<h5 id="create-network">Create network</h5>
+<p>After that we need create network, to add <strong>AGW</strong> Later, just follow like bellow :</p>
+<p><img src="./images/network.png" alt="magma-lab"></p>
+<p><img src="./images/network-create.png" alt="magma-lab"></p>
+<p><strong>Let&rsquo;s go to network management</strong>
+<img src="./images/network-create2.png" alt="magma-lab"></p>
+<p>Bellow for user interface network management
+<img src="./images/network2.png" alt="magma-lab"></p>
+<p>Above last of <strong>Deploy magma orchestrator</strong> section, next is deploy Magma AGW on OpenStack</p>
+<p> </p>
+<hr>
+<h2 id="b-deploy-magma-agw"><strong>B. Deploy Magma AGW</strong></h2>
+<p>First, we need create VM or Instances with specs bellow :</p>
+<ul>
+<li>OS : Ubuntu 20.04</li>
+<li>2 Network Interface :
+<ul>
+<li>eth0 = for <strong>SGi</strong> (internet connection, connection to Magma orc8r)</li>
+<li>eth1 = for <strong>S1</strong> connection to eNodeB (SRSRAN)</li>
+</ul>
+</li>
+</ul>
+<p>In <strong>OpenStack</strong> we use external network for eth0, and internal for eth1</p>
+<p> </p>
+<h3 id="1-preparing-vm"><strong>1. Preparing VM</strong></h3>
+<h5 id="create-instance">Create Instance</h5>
+<p>For create instances you can follow my previous post</p>
+<h5 id="create-s1-port">Create S1 Port</h5>
+<p>You need create port inside of <strong>internal network</strong>, Network -&gt; Network -&gt; Chose internal network -&gt; Click Port and add port like bellow :</p>
+<p><img src="./images/port.png" alt="magma-lab"></p>
+<p>Add security groups, we use allow-all
+<img src="./images/port2.png" alt="magma-lab"></p>
+<p>After port created, go to <strong>instances</strong> and <strong>attach</strong> port S1
+<img src="./images/port3.png" alt="magma-lab"></p>
+<p>And you can see, VM already have 2 network interface
+<img src="./images/port4.png" alt="magma-lab"></p>
+<h5 id="access-instance">Access Instance</h5>
+<p>Makesure network configuration like bellow</p>
+<p><img src="./images/vm.png" alt="magma-lab"></p>
+<p> </p>
+<h3 id="2-installing-magma-agw"><strong>2. Installing Magma AGW</strong></h3>
+<p>Note for this, we need change address like format bellow :</p>
+<pre tabindex="0"><code>bash agw_install_ubuntu.sh IP_ADDRESS_SGi IP_GATEWAY
+</code></pre><pre tabindex="0"><code>wget https://raw.githubusercontent.com/magma/magma/v1.6/lte/gateway/deploy/agw_install_ubuntu.sh
+bash agw_install_ubuntu.sh 172.168.14.100/24 172.168.14.1
+</code></pre><p><img src="./images/agw1.png" alt="magma-lab"></p>
+<h5 id="notes--during-installation-magma-vm-will-rebooting-2-times-so-we-need-reconnect-ssh">Notes : During Installation, Magma VM will rebooting 2 times, so we need reconnect SSH</h5>
+<p>After rebooting during installation, we can see <code>eth1</code> or S1 Interface interface already changed automatically
+<img src="./images/agw2.png" alt="magma-lab"></p>
+<p>To see <strong>progress</strong> installation, we can check using. And <code>Stopped AGW Installation</code> indicate success installation</p>
+<pre tabindex="0"><code>journalctl -fu agw_installation
+</code></pre><p><img src="./images/agw3.png" alt="magma-lab"></p>
+<p><strong>To make sure installation success, check with</strong></p>
+<pre tabindex="0"><code>sudo systemctl status magma@*
+</code></pre><p><img src="./images/agw4.png" alt="magma-lab"></p>
+<h3 id="3-configuring-agw"><strong>3. Configuring AGW</strong></h3>
+<p>First, we need <strong>Prepare secrets &amp; control_proxy</strong> configuration</p>
+<p>Create directory to plase certs configuration</p>
+<pre tabindex="0"><code>sudo mkdir -p /var/opt/magma/tmp/certs/
+sudo mkdir -p /var/opt/magma/configs
+</code></pre><h5 id="download-secrets">Download secrets</h5>
+<p>Download secrets from <strong>Magma Deployer</strong> VM previously created in step <code>6. Preparation &amp; Assemble Certificates</code></p>
+<pre tabindex="0"><code>cd /var/opt/magma/tmp/certs/
+sudo scp -i ~/priv-key-aws-tmp ubuntu@34.216.16.149:/home/ubuntu/secrets/certs/* .
+ls
+</code></pre><p><img src="./images/cagw1.png" alt="magma-lab"></p>
+<h5 id="check-all-aws-route-53-address">Check all AWS Route 53 address</h5>
+<p>Check on AWS Dashboard, Route 53 menu</p>
+<p><img src="./images/53.png" alt="magma-lab"></p>
+<h5 id="create-control_proxyyml">Create control_proxy.yml</h5>
+<p>This file for connection from <strong>AGW to Magma orchestrator</strong> and save</p>
+<pre tabindex="0"><code>sudo nano /var/opt/magma/configs/control_proxy.yml
+</code></pre><pre tabindex="0"><code>cloud_address: controller.orc8r.rsch-lab.com
+cloud_port: 443
+bootstrap_address: bootstrapper-controller.orc8r.rsch-lab.com
+bootstrap_port: 443
+fluentd_address: fluentd.orc8r.rsch-lab.com
+fluentd_port: 24224
+
+rootca_cert: /var/opt/magma/tmp/certs/rootCA.pem
+</code></pre><p><img src="./images/cagw2.png" alt="magma-lab"></p>
+<h5 id="check-hardware-id--challenge-key">Check Hardware ID &amp; Challenge Key</h5>
+<p>This one important, because will <strong>Register</strong> on the Magma orchestrator</p>
+<pre tabindex="0"><code>show_gateway_info.py
+</code></pre><p><img src="./images/key.png" alt="magma-lab"></p>
+<h3 id="4-add--register-gateway"><strong>4. Add &amp; Register Gateway</strong></h3>
+<p>We need login using magma-test organization like previous, and go to <strong>devices menu</strong> and <strong>add gateway</strong></p>
+<p><img src="./images/gw1.png" alt="magma-lab"></p>
+<p>Put Hardware ID &amp; Challenge Key
+<img src="./images/gw2.png" alt="magma-lab"></p>
+<p><strong>Just click next,</strong> for configuration soon when add eNodeb &amp; UE
+<img src="./images/gw3.png" alt="magma-lab"></p>
+<p><img src="./images/gw4.png" alt="magma-lab">
+<img src="./images/gw5.png" alt="magma-lab">
+<img src="./images/gw6.png" alt="magma-lab"></p>
+<p><strong>Save and close</strong>
+<img src="./images/gw7.png" alt="magma-lab"></p>
+<h3 id="5-restarting-agw-services"><strong>5. Restarting AGW Services</strong></h3>
+<pre tabindex="0"><code>sudo sytemctl stop magma@*
+sudo systemctl restart magma@magmad.service
+</code></pre><p><strong>Wait for a time, because need time connecting</strong>, After <strong>connected</strong> we can see like logs bellow :</p>
+<p><img src="./images/gw8.png" alt="magma-lab"></p>
+<h3 id="6-verify-on-nms"><strong>6. Verify on NMS</strong></h3>
+<p>We can see AGW already connected from OpenStack VM to Magma orchestrator on AWS, and <strong>GOOD</strong> Health status.</p>
+<p><img src="./images/gw9.png" alt="magma-lab">
+<img src="./images/gw10.png" alt="magma-lab">
+<img src="./images/gw11.png" alt="magma-lab"></p>
+<h3 id="7-access-magma-api"><strong>7. Access Magma API</strong></h3>
+<p>Othen than accessing using NMS, we can use API for manage.</p>
+<h5 id="download-admin_operatorpfx">Download admin_operator.pfx</h5>
+<p>You need download <code>admin_operator.pfx</code> from your magma orchestrator</p>
+<p><img src="./images/fr.png" alt="magma-lab"></p>
+<h5 id="import-certificates">Import certificates</h5>
+<p>Use firefox for accessing WEB API, import certificates like bellow</p>
+<p><img src="./images/fr1.png" alt="magma-lab"></p>
+<p>Click <strong>Import</strong>, choose your previous downloaded
+<img src="./images/fr2.png" alt="magma-lab"></p>
+<h5 id="accessing-api">Accessing API</h5>
+<p>Go to your address, or can check on Route 53 AWS</p>
+<pre tabindex="0"><code>https://api.orc8r.rsch-lab.com/swagger/v1/ui/orchestrator
+</code></pre><p><img src="./images/fr3.png" alt="magma-lab"></p>
+<p>After it, you need refresh browser and <code>Accept risk and continue</code>, this issue happen because issuer <strong>unknown</strong> no problem, to <strong>solved</strong> this we can created secrets on magma installation using <strong>Lets encrypt</strong>.</p>
+<p><img src="./images/fr4.png" alt="magma-lab">
+<img src="./images/fr5.png" alt="magma-lab"></p>
+<p> </p>
+<h3 id="next-part-2--integrate-magma-agw-with-enodeb--ue-simulator-with-srsran"><strong>NEXT Part 2 : Integrate Magma AGW with eNodeB &amp; UE Simulator with srsRAN</strong></h3>
+<p> </p>
+<hr>
+<h2 id="thankyou-to"><strong>Thankyou to</strong>:</h2>
+<h6 id="--shubham-tatvamasihttpsgithubcomshubhamtatvamasi-for-great-documentation-from-you">- <a href="https://github.com/ShubhamTatvamasi">Shubham Tatvamasi</a> for great documentation from you</h6>
+<h6 id="---magma-official-documentationhttpsdocsmagmacoreorgdocsbasicsintroductionhtml">-  <a href="https://docs.magmacore.org/docs/basics/introduction.html">Magma official Documentation</a></h6>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1250 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2022-01-01 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/openstack-usages-create-network-image-instaces-etc./">
+                <span class="button__icon">←</span>
+                <span class="button__text">7. Openstack usages (create network, image, instaces, etc.)</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="/posts/integrate-magmacore-with-enodeb-&#43;-ue-simulator-srsran-part2/">
+                <span class="button__text">9. Integrate Magmacore with eNodeB &#43; UE Simulator (srsRAN) - Part2</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>

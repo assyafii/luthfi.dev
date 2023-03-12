@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : In-band Network Telemetry, ONOS, P4, eBPF, XDP
+Detailed Lab Diagram General Lab Diagram Summary steps Install all depedencies Install all packages needed Running ONOS Running Mininet with BMv2 Running INT Apps Running Parser, XDP &amp;amp; eBPF Adding Data to Grafana Verify System requirements Ubuntu 18.04 RAM = 8 GB (Prefer 16GB) vCPU = 4 (Prefer 8) Root user Preparation Make sure kernel &amp;amp; version of ubuntu like bellow, you can use above version, but bellow already tested." />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/lab-p4-int-in-band-network-telemetry-with-onos-from-scratch/" />
+
+
+    <title>
+        
+            10. Lab P4-INT (In-band network telemetry) using ONOS and eBPF :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="10. Lab P4-INT (In-band network telemetry) using ONOS and eBPF">
+<meta itemprop="description" content="Specification : In-band Network Telemetry, ONOS, P4, eBPF, XDP
+Detailed Lab Diagram General Lab Diagram Summary steps Install all depedencies Install all packages needed Running ONOS Running Mininet with BMv2 Running INT Apps Running Parser, XDP &amp; eBPF Adding Data to Grafana Verify System requirements Ubuntu 18.04 RAM = 8 GB (Prefer 16GB) vCPU = 4 (Prefer 8) Root user Preparation Make sure kernel &amp; version of ubuntu like bellow, you can use above version, but bellow already tested."><meta itemprop="datePublished" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2022-01-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1009"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="10. Lab P4-INT (In-band network telemetry) using ONOS and eBPF"/>
+<meta name="twitter:description" content="Specification : In-band Network Telemetry, ONOS, P4, eBPF, XDP
+Detailed Lab Diagram General Lab Diagram Summary steps Install all depedencies Install all packages needed Running ONOS Running Mininet with BMv2 Running INT Apps Running Parser, XDP &amp; eBPF Adding Data to Grafana Verify System requirements Ubuntu 18.04 RAM = 8 GB (Prefer 16GB) vCPU = 4 (Prefer 8) Root user Preparation Make sure kernel &amp; version of ubuntu like bellow, you can use above version, but bellow already tested."/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2022-01-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        5 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/lab-p4-int-in-band-network-telemetry-with-onos-from-scratch/"><ol start="10">
+<li>Lab P4-INT (In-band network telemetry) using ONOS and eBPF</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : In-band Network Telemetry, ONOS, P4, eBPF, XDP</p>
+</blockquote>
+<h2 id="detailed-lab-diagram"><strong>Detailed Lab Diagram</strong></h2>
+<p><img src="./images/deep-p4-int.png" alt="aws-lab"></p>
+<p> </p>
+<h2 id="general-lab-diagram"><strong>General Lab Diagram</strong></h2>
+<p><img src="./images/general-p4-int.png" alt="aws-lab"></p>
+<p> 
+ </p>
+<hr>
+<p> </p>
+<h3 id="summary-steps"><strong>Summary steps</strong></h3>
+<ul>
+<li>Install all depedencies</li>
+<li>Install all packages needed</li>
+<li>Running ONOS</li>
+<li>Running Mininet with BMv2</li>
+<li>Running INT Apps</li>
+<li>Running Parser, XDP &amp; eBPF</li>
+<li>Adding Data to Grafana</li>
+<li>Verify</li>
+</ul>
+<h3 id="system-requirements"><strong>System requirements</strong></h3>
+<ul>
+<li>Ubuntu 18.04</li>
+<li>RAM = 8 GB (Prefer 16GB)</li>
+<li>vCPU = 4 (Prefer 8)</li>
+<li><strong>Root user</strong></li>
+</ul>
+<h3 id="preparation"><strong>Preparation</strong></h3>
+<p>Make sure kernel &amp; version of <strong>ubuntu</strong> like bellow, you can use above version, but bellow already tested.</p>
+<p><img src="./images/version.png" alt="p4-int"></p>
+<h6 id="1-clone-repository">1. Clone repository</h6>
+<pre tabindex="0"><code>sudo su
+apt update
+git clone https://github.com/opennetworkinglab/onos.git -b onos-2.1
+</code></pre><h6 id="2-running-root-bootstrap">2. Running Root-bootstrap</h6>
+<p>This activity will install automatically packages bellow :</p>
+<ul>
+<li>Installing all depedencies</li>
+<li>creating sdn user</li>
+<li>Installing bazel</li>
+</ul>
+<p>Make sure you already on root user, this command will finished until 20-30 minutes, let&rsquo;s create coffee first :)</p>
+<p>Download root-bootstrap.sh here : <a href="https://github.com/assyafii/ONOS-P4-INT/blob/main/root-bootstrap.sh">https://github.com/assyafii/ONOS-P4-INT/blob/main/root-bootstrap.sh</a></p>
+<pre tabindex="0"><code>cd /root/onos/tools/dev/p4vm
+mv root-bootstrap.sh root-bootstrap.sh.bak 
+sudo nano root-bootstrap.sh
+
+Note : Copy &amp; paste from Github
+
+bash root-bootstrap.sh
+</code></pre><p>Makesure completed installation like bellow</p>
+<p><img src="./images/root.png" alt="p4-int"></p>
+<h6 id="3-running-user-bootstrap">3. Running User-bootstrap</h6>
+<p>Then we continue to install all packages, user-bootstrap include :</p>
+<ul>
+<li>ONOS Apps</li>
+<li>Mininet + BMv2</li>
+<li>Build P4 Tools</li>
+</ul>
+<p>Download user-bootstrap.sh here : <a href="https://github.com/assyafii/ONOS-P4-INT/blob/main/user-bootstrap.sh">https://github.com/assyafii/ONOS-P4-INT/blob/main/user-bootstrap.sh</a></p>
+<pre tabindex="0"><code>cd /root/onos/tools/dev/p4vm
+mv user-bootstrap.sh user-bootstrap.sh.bak
+sudo nano user-bootstrap.sh
+
+Note : Copy &amp; paste from Github
+
+su sdn &#39;user-bootstrap.sh&#39;
+</code></pre><p>Makesure completed installation like bellow</p>
+<p><img src="./images/user.png" alt="p4-int"></p>
+<h6 id="4-build-onos">4. Build ONOS</h6>
+<p>Take time for first time building, for second &amp; next will not</p>
+<pre tabindex="0"><code>su sdn
+cd ~/onos/
+</code></pre><p>First, we need modified replace <strong>HTTP to HTTPS</strong>, this important, if you not follow this, installation <strong>will failed</strong>.</p>
+<pre tabindex="0"><code>sed -i &#39;s/http:/https:/g&#39; ~/onos/tools/build/bazel/generate_workspace.bzl
+sudo cat ~/onos/tools/build/bazel/generate_workspace.bzl | grep https:
+bazel run onos-local clean
+</code></pre><p><img src="./images/onos1.png" alt="p4-int"></p>
+<p><strong>Open ONOS Dashboard using</strong></p>
+<pre tabindex="0"><code>http://ip_onos:8181/onos/ui/index.html
+</code></pre><pre tabindex="0"><code>user = onos
+password = rocks
+</code></pre><p><img src="./images/onos2.png" alt="p4-int">
+<img src="./images/onos3.png" alt="p4-int"></p>
+<p><strong>After verify, closed ONOS first, to continue activity</strong></p>
+<p>In terminal press</p>
+<pre tabindex="0"><code>CTRL + C
+</code></pre><p><img src="./images/onos4.png" alt="p4-int"></p>
+<h6 id="5-build-bcc-bpf-compiler-collection">5. Build BCC (BPF Compiler Collection)</h6>
+<p>This activity will take time, ETA 30-60 minutes, enjoy with coffee first :)</p>
+<pre tabindex="0"><code>sudo apt -y install bison build-essential cmake flex git libedit-dev libllvm3.9 llvm-3.9-dev libclang-3.9-dev python zlib1g-dev libelf-dev clang-3.9
+wget https://github.com/iovisor/bcc/archive/refs/heads/tag_v0.7.0.zip
+unzip tag_v0.7.0.zip
+sudo mv bcc-tag_v0.7.0 bcc 
+mkdir bcc/build; cd bcc/build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make
+sudo make install
+</code></pre><p><img src="./images/bcc.png" alt="p4-int"></p>
+<h6 id="6-download-bpf-collector">6. Download BPF Collector</h6>
+<pre tabindex="0"><code>cd ~
+git clone https://gitlab.com/tunv_ebpf/BPFCollector.git
+cd BPFCollector
+git checkout -t origin/spec_1.0
+</code></pre><h6 id="7-activate-bpf--create-new-virtual-interface">7. Activate BPF &amp; Create new virtual interface</h6>
+<p>This interface will used for parser, if you <strong>reboot</strong> VM later, you need add this interfaces again</p>
+<pre tabindex="0"><code>sudo sysctl net/core/bpf_jit_enable=1
+pip install cython
+sudo ip link add veth_1 type veth peer name veth_2 
+sudo ip link set dev veth_1 up 
+sudo ip link set dev veth_2 up 
+</code></pre><p><img src="./images/bpf_int.png" alt="p4-int"></p>
+<h3 id="monitoring-section"><strong>Monitoring Section</strong></h3>
+<h6 id="1-install-influxdb">1. Install InfluxDB</h6>
+<pre tabindex="0"><code>sudo curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+sudo echo &#34;deb https://repos.influxdata.com/ubuntu bionic stable&#34; | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt update
+sudo apt install influxdb
+</code></pre><p>Make sure installation success.</p>
+<pre tabindex="0"><code>sudo systemctl stop influxdb
+sudo systemctl start influxdb
+sudo systemctl enable --now influxdb
+sudo systemctl is-enabled influxdb
+sudo systemctl status influxdb
+</code></pre><p><img src="./images/influx.png" alt="p4-int"></p>
+<h6 id="testing-bpf-collector-connectivity">Testing BPF Collector connectivity</h6>
+<p>Before continue installation, we test BPF first like bellow</p>
+<pre tabindex="0"><code>sudo pip install influxdb
+
+cd ~/BPFCollector
+sudo pip install pytest
+sudo python -m pytest 
+</code></pre><p><strong>Make sure your connectivity green collor like bellow</strong></p>
+<p><img src="./images/connect.png" alt="p4-int"></p>
+<h6 id="2-install-prometheus">2. Install Prometheus</h6>
+<pre tabindex="0"><code>cd ~
+pip install prometheus-client
+wget https://s3-eu-west-1.amazonaws.com/deb.robustperception.io/41EFC99D.gpg | sudo apt-key add -
+sudo apt update
+sudo apt -y install prometheus
+sudo systemctl start prometheus
+sudo systemctl enable prometheus
+sudo systemctl status prometheus
+</code></pre><p><img src="./images/prom.png" alt="p4-int"></p>
+<h6 id="3-add-int-exporter-to-prometheus">3. Add INT exporter to Prometheus</h6>
+<pre tabindex="0"><code>sudo nano /etc/prometheus/prometheus.yml
+</code></pre><pre tabindex="0"><code>  - job_name: p4switch
+    static_configs:
+      - targets: [&#39;localhost:8000&#39;]
+</code></pre><p><img src="./images/int-exporter.png" alt="p4-int"></p>
+<p><strong>Save &amp; restart services</strong></p>
+<pre tabindex="0"><code>sudo sytemctl restart prometheus
+sudo sytemctl status prometheus
+</code></pre><h6 id="4-install-grafana">4. Install Grafana</h6>
+<pre tabindex="0"><code>nano grafana.sh
+sudo apt-get install gnupg2 curl software-properties-common -y
+curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+sudo add-apt-repository &#34;deb https://packages.grafana.com/oss/deb stable main&#34;
+sudo apt-get update -y
+sudo apt-get install grafana -y
+sudo systemctl daemon-reload
+sudo systemctl enable grafana-server
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+</code></pre><p><img src="./images/grafana.png" alt="p4-int"></p>
+<p><strong>Access Grafana</strong>
+Login with default credentials</p>
+<pre tabindex="0"><code>http://your_ip:3000
+
+username : admin
+password : admin
+</code></pre><p><img src="./images/gui.png" alt="p4-int"></p>
+<h6 id="5-add-data-source">5. Add data source</h6>
+<p><img src="./images/graf1.png" alt="p4-int"></p>
+<p>Add prometheus data source
+<img src="./images/graf2.png" alt="p4-int">
+<img src="./images/graf3.png" alt="p4-int"></p>
+<p>Make sure data source working
+<img src="./images/graf4.png" alt="p4-int"></p>
+<h3 id="update-bmv2-topology"><strong>Update BMv2 Topology</strong></h3>
+<pre tabindex="0"><code>su sdn
+cd ~
+sudo nano $ONOS_ROOT/tools/test/topos/bmv2-demo.py
+</code></pre><h6 id="1-add-intf-module">1. Add Intf module</h6>
+<pre tabindex="0"><code>Intf
+</code></pre><p><img src="./images/topo.png" alt="p4-int"></p>
+<h6 id="2-add-virtual-interface">2. Add Virtual interface</h6>
+<pre tabindex="0"><code>collectorIntf = Intf( &#39;veth_1&#39;, node=net.nameToNode[ &#34;s12&#34; ] )
+</code></pre><p><img src="./images/topo2.png" alt="p4-int">
+ </p>
+<hr>
+<p> </p>
+<h3 id="running-onos-int-p4"><strong>Running ONOS-INT P4</strong></h3>
+<p>This section you need open <strong>4 terminal</strong>, you can use <code>Tmux</code> for it or open <strong>4 Tab terminal</strong></p>
+<h4 id="terminal-1-running-onos">Terminal 1 (Running ONOS)</h4>
+<pre tabindex="0"><code>su sdn
+cd ~/onos/
+bazel run onos-local clean
+</code></pre><p><img src="./images/run1.png" alt="p4-int"></p>
+<p><strong>Activate ONOS application</strong></p>
+<p>Then, open ONOS Dashboard &amp; activate application like bellow</p>
+<p><strong>1. Reactive Forwarding</strong></p>
+<p><img src="./images/fwd.png" alt="p4-int"></p>
+<p><strong>2. Proxy ARP</strong></p>
+<p><img src="./images/proxyarp.png" alt="p4-int"></p>
+<p><strong>3. INT Dashboard</strong></p>
+<p><img src="./images/int1.png" alt="p4-int"></p>
+<p>Choose <strong>Yes</strong> for confirm</p>
+<p><img src="./images/int2.png" alt="p4-int"></p>
+<p>Yeay, your INT dashboard already activated
+<img src="./images/int3.png" alt="p4-int"></p>
+<h4 id="terminal-2-running-mininet-bmv2">Terminal 2 (Running Mininet-BMv2)</h4>
+<pre tabindex="0"><code>su sdn
+cd ~
+sudo -E $ONOS_ROOT/tools/test/topos/bmv2-demo.py --onos-ip=127.0.0.1 --pipeconf-id=org.onosproject.pipelines.int
+</code></pre><p><strong>NOTES : If first time running, have error like bellow, just enter <code>exit</code> &amp; Running again</strong>
+<img src="./images/mn_error.png" alt="p4-int"></p>
+<p><strong>Running Mininet again, until bellow</strong></p>
+<p>Make sure ping connection success
+<img src="./images/mn_ping.png" alt="p4-int"></p>
+<h4 id="terminal-3-running-bpf-parser">Terminal 3 (Running BPF Parser)</h4>
+<pre tabindex="0"><code>su sdn 
+cd ~ 
+sudo python BPFCollector/PTClient.py veth_2
+</code></pre><p><img src="./images/bpf_parser.png" alt="p4-int"></p>
+<h4 id="terminal-4-add-mirroring">Terminal 4 (Add mirroring)</h4>
+<pre tabindex="0"><code>su sdn 
+cd ~ 
+simple_switch_CLI --thrift-port `cat /tmp/bmv2-s12-thrift-port`
+</code></pre><pre tabindex="0"><code>mirroring_add 500 4
+</code></pre><p><img src="./images/mirroring_add.png" alt="p4-int"></p>
+<h6 id="note--to-get-value-4-above">Note : To get value <code>4</code> above</h6>
+<p>You can check on onos dashboard like bellow :</p>
+<p><img src="./images/ver1.png" alt="p4-int">
+<img src="./images/ver2.png" alt="p4-int"></p>
+<h4 id="back-to-terminal-2-generate-traffic">Back to terminal 2 (Generate traffic)</h4>
+<ul>
+<li><strong>H2</strong> = as a iperf server using UDP traffic (Port 5001)</li>
+<li><strong>H1</strong> = as a iperf server, generate trafic to H2</li>
+<li>You can customize how much traffic and others for iperf.</li>
+</ul>
+<pre tabindex="0"><code>h2 iperf -s -u &amp;
+h1 iperf -c h2 -u -t 1000 -i 1 
+</code></pre><p><img src="./images/iperf.png" alt="p4-int"></p>
+<p> </p>
+<hr>
+<p> </p>
+<h3 id="verify-network--add-int-flow-rule"><strong>Verify network &amp; add INT Flow (Rule)</strong></h3>
+<h6 id="1-you-can-see-traffic-bellow">1. You can see traffic bellow</h6>
+<p>Note : Press <strong>H</strong> to show host, &amp; triple <strong>L</strong> to show links</p>
+<p><img src="./images/flow.png" alt="p4-int"></p>
+<h6 id="2-add-int-collector">2. Add INT Collector</h6>
+<p>By default using port <strong>54321</strong>, this can customize on PTCollector file</p>
+<p><img src="./images/int_app1.png" alt="p4-int"></p>
+<h6 id="3-add-int-flow-rule">3. Add INT flow (Rule)</h6>
+<p>Add INT rule, in this case we will monitor protocol UDP Port 5001 from H1 to H2, <strong>so if any traffic on that, INT apps will add new INT header, you can see on Lab Detailed Diagram above</strong></p>
+<p><img src="./images/int_app2.png" alt="p4-int"></p>
+<h6 id="4-check-prometheus-status">4. Check prometheus status</h6>
+<p><img src="./images/prometheus_switch.png" alt="p4-int"></p>
+<h6 id="5-check-int-metrics">5. Check INT metrics</h6>
+<p>Yeay :)</p>
+<p><img src="./images/exporter.png" alt="p4-int"></p>
+<h3 id="last-step-add-metrics-to-visualization"><strong>Last step, add metrics to visualization</strong></h3>
+<p><strong>Add new panel</strong>
+<img src="./images/viz1.png" alt="p4-int"></p>
+<p><strong>Choose metrics name</strong>
+<img src="./images/viz2.png" alt="p4-int"></p>
+<p><strong>And you can see visualization :)</strong>
+<img src="./images/viz3.png" alt="p4-int">
+<img src="./images/viz4.png" alt="p4-int"></p>
+<h4 id="video-guide">Video guide</h4>
+<p>Section using 4 terminal is hard, you can see my video guide on youtube (video last 2 years, but same)</p>
+<h4 id="thankyou">Thankyou</h4>
+<p>Enjoy your lab &amp; Hopefully we can learning &amp; sharing.</p>
+<p> </p>
+<h4 id="reference">Reference</h4>
+<ul>
+<li><a href="https://www.sdnlab.com/24279.html">https://www.sdnlab.com/24279.html</a></li>
+<li><a href="https://wiki.onosproject.org/display/ONOS/In-band+Network+Telemetry+%28INT%29+with+ONOS+and+P4">https://wiki.onosproject.org/display/ONOS/In-band+Network+Telemetry+%28INT%29+with+ONOS+and+P4</a></li>
+<li><a href="https://github.com/opennetworkinglab/onos">https://github.com/opennetworkinglab/onos</a></li>
+</ul>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        1009 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2022-01-01 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/integrate-magmacore-with-enodeb-&#43;-ue-simulator-srsran-part2/">
+                <span class="button__icon">←</span>
+                <span class="button__text">9. Integrate Magmacore with eNodeB &#43; UE Simulator (srsRAN) - Part2</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="/posts/deploy-osm-mano-onboarding-vnf-in-openstsack-nfvi/">
+                <span class="button__text">11. Deploy OSM MANO &amp; Onboarding VNF in Openstack NFVi</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>

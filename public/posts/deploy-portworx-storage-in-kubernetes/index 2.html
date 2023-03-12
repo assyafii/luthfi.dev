@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Specification : Kubernetes, PortWorx, Storage
+PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp;amp; Bandwidth.
+Lab Topology IP Address Nodes 10.20.10.230 sf-k8s-master-1 10.20.10.235 sf-k8s-node-1 10.20.10.241 sf-k8s-portworx-1 10." />
+<meta name="keywords" content="P4, SDN, Cloud, Openstack, etc." />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="" />
+<link rel="canonical" href="/posts/deploy-portworx-storage-in-kubernetes/" />
+
+
+    <title>
+        
+            3. Deploy PortWorx storage in kubernetes :: M. Luthfi As Syafii 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.25424a81287dda0fe0e15c0d2e0df95b1d84d2c20a84496978c924ee4be417cb.css">
+
+
+
+
+
+
+<meta itemprop="name" content="3. Deploy PortWorx storage in kubernetes">
+<meta itemprop="description" content="Specification : Kubernetes, PortWorx, Storage
+PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp; Bandwidth.
+Lab Topology IP Address Nodes 10.20.10.230 sf-k8s-master-1 10.20.10.235 sf-k8s-node-1 10.20.10.241 sf-k8s-portworx-1 10."><meta itemprop="datePublished" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-01-02T00:00:00+00:00" />
+<meta itemprop="wordCount" content="279"><meta itemprop="image" content="/"/>
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/"/>
+
+<meta name="twitter:title" content="3. Deploy PortWorx storage in kubernetes"/>
+<meta name="twitter:description" content="Specification : Kubernetes, PortWorx, Storage
+PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp; Bandwidth.
+Lab Topology IP Address Nodes 10.20.10.230 sf-k8s-master-1 10.20.10.235 sf-k8s-node-1 10.20.10.241 sf-k8s-portworx-1 10."/>
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-01-02 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+<noscript><img src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/pixel.gif"></noscript> <script src="https://shynet.tommasopifferi.com/ingress/5bf99fb8-5643-4d56-872b-14aa9b66415b/script.js"></script>
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+        
+            
+            <span class="logo__text">luthfi.dev</span>
+            <span class="logo__cursor" style=
+                  "
+                   
+                   ">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="/about">About</a></li><li><a href="/posts">Documentation</a></li><li><a href="/resume">Resume</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        2 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="/posts/deploy-portworx-storage-in-kubernetes/"><ol start="3">
+<li>Deploy PortWorx storage in kubernetes</li>
+</ol>
+</a>
+      </h1>
+
+      
+
+      <div class="post-content">
+        <hr>
+<blockquote>
+<p>Specification : Kubernetes, PortWorx, Storage</p>
+</blockquote>
+<h3 id="portworx-storage-cluster"><strong>PortWorx storage cluster</strong></h3>
+<p>Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp; Bandwidth.</p>
+<p> </p>
+<h3 id="lab-topology"><strong>Lab Topology</strong></h3>
+<p><img src="./portworx.png" alt="portworx-topology">
+ </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">IP Address</th>
+<th style="text-align:center">Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">10.20.10.230</td>
+<td style="text-align:center">sf-k8s-master-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.235</td>
+<td style="text-align:center">sf-k8s-node-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.241</td>
+<td style="text-align:center">sf-k8s-portworx-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.242</td>
+<td style="text-align:center">sf-k8s-portworx-2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="first-make-your-k8s-cluster-already-running">First, make your k8s cluster already running</h4>
+<p>If your cluster ready, you can check in previous docummentation for installation <a href="https://assyafii.com/docs/install-kubernetes-cluster-multi-master-ha/">https://assyafii.com/docs/install-kubernetes-cluster-multi-master-ha/</a></p>
+<p><img src="./ready.png" alt="portworx-ready"></p>
+<h4 id="add-labels-pxmetadata-nodetrue-for-portworx-nodes">Add labels px/metadata-node=true for portworx nodes</h4>
+<pre tabindex="0"><code>kubectl label nodes sf-k8s-portworx-1 sf-k8s-portworx-2 px/metadata-node=true
+</code></pre><h4 id="create-portworx-template-generator">Create portworx template generator</h4>
+<p><strong>1. Login to <a href="https://central.portworx.com/specGen/wizard">https://central.portworx.com/specGen/wizard</a> &amp; choose version</strong>
+<img src="./1.png" alt="portworx-1"></p>
+<p><strong>2. Checklist use operator</strong>
+<img src="./2.png" alt="portworx-2"></p>
+<p><strong>3. You need configure KVDB Devices if production, for testing skip this</strong>
+<img src="./3.png" alt="portworx-3"></p>
+<p><strong>4. Skip network configuration</strong>
+<img src="./4.png" alt="portworx-4"></p>
+<p><strong>5. Add cluster name prefix</strong>
+<img src="./5.png" alt="portworx-5"></p>
+<p><strong>6. Apply deployment to cluster from template created</strong>
+<img src="./6.png" alt="portworx-6"></p>
+<h4 id="verification">Verification</h4>
+<p><strong>Checks status POD portworx running</strong></p>
+<pre tabindex="0"><code>kubectl get pods -n kube-system
+</code></pre><p><strong>If running all, check cluster portworx</strong></p>
+<pre tabindex="0"><code>PX_POD=$(kubectl get pods -l name=portworx -n kube-system -o jsonpath=&#39;{.items[0].metadata.name}&#39;)
+kubectl exec -it $PX_POD -n kube-system -- /opt/pwx/bin/pxctl status
+</code></pre><p><img src="./7.png" alt="portworx-7"></p>
+<h4 id="testing-scenario">Testing scenario</h4>
+<p>For test, wee will deploy POD FIO then benchmark on directory which mount to portworx cluster.</p>
+<p><img src="./8.png" alt="portworx-8"></p>
+<p><strong>Create PVC &amp; POD For testing</strong></p>
+<pre tabindex="0"><code>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: px-pvc-fio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: px-replicated
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: px-pod-fio
+spec:
+  containers:
+    - name: fio
+      image: vineethac/fio_image
+      command: [ &#34;/bin/bash&#34;, &#34;-c&#34;, &#34;--&#34; ]
+      args: [ &#34;while true; do sleep 30; done;&#34; ]
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: &#34;/mnt/px&#34;
+          name: px-pvc-fio-vol
+  volumes:
+    - name: px-pvc-fio-vol
+      persistentVolumeClaim:
+        claimName: px-pvc-fio
+</code></pre><p><img src="./9.png" alt="portworx-9"></p>
+<p><strong>FIO Testing in directory /mnt/px</strong></p>
+<p><img src="./10.png" alt="portworx-10"></p>
+<h4 id="reference-">Reference :</h4>
+<p><a href="https://thenewstack.io/tutorial-install-and-configure-portworx-on-a-bare-metal-kubernetes-cluster/">https://thenewstack.io/tutorial-install-and-configure-portworx-on-a-bare-metal-kubernetes-cluster/</a></p>
+<p><a href="https://docs.portworx.com/portworx-install-with-kubernetes/on-premise/airgapped/">https://docs.portworx.com/portworx-install-with-kubernetes/on-premise/airgapped/</a></p>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        279 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        2021-01-02 07:00 &#43;0700
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="/posts/deploy-storage-cluster-rook-with-ceph-in-kubernetes/">
+                <span class="button__icon">←</span>
+                <span class="button__text">2. Deploy storage cluster ROOK with CEPH in Kubernetes</span>
+              </a>
+            </span>
+          
+
+          
+            <span class="button next">
+              <a href="/posts/5g-cloud-native-simulation-with-open5gs/">
+                <span class="button__text">4. 5G Cloud Native Simulation with Open5Gs</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2023</span>
+            
+            <span>Made by <a href="http://gohugo.io">Hugo</a></span>
+            </span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="/bundle.min.8ea0ff01dfa3348eb00589f8f586e91fbdd52c123c03a22e5d3989256f0764896b02dc521767fb735d737cb971861f5002c6383ddf7ce653bd99a4b1971b8cda.js" integrity="sha512-jqD/Ad&#43;jNI6wBYn49YbpH73VLBI8A6IuXTmJJW8HZIlrAtxSF2f7c11zfLlxhh9QAsY4Pd985lO9maSxlxuM2g==" crossorigin="anonymous"></script>
+
+
+
+    </body>
+</html>
