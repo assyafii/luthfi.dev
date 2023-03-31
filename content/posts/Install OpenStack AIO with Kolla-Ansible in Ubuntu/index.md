@@ -100,7 +100,7 @@ mv /etc/kolla/globals.yml /etc/kolla/globals.yml.bak
 You can configure base on you needed, but for minimal and in this scenario like bellow :
 
 ```
-nano etc/kolla/globals.yml
+nano /etc/kolla/globals.yml
 ```
 
 ![openstack-aio](./images/6.png)
