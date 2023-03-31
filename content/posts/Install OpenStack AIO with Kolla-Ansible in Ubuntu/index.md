@@ -199,7 +199,7 @@ docker ps
 
 ```
 cd /etc/kolla
-grep keystone admin password /etc/kolla/passwords.yml
+grep keystone_admin_password /etc/kolla/passwords.yml
 ```
 
 ![openstack-aio](./images/13.png)
