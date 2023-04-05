@@ -12,12 +12,11 @@ layout: 'list'
 
 
 &nbsp;
-|  Specs  |       Value       |
-|:------------:|:-----------------:|
-| OS | Ubuntu 20.04   |
-| vCPU | 4    |
-| RAM | 8GB    |
-| Storage | 40 GB    |
+**Specification**
+- OS : Ubuntu 20.04
+- vCPU : 4
+- RAM : 8GB
+- Storage : 40 GB
 
  
 ### **Requirements**
