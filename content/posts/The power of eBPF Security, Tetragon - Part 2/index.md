@@ -94,9 +94,7 @@ You can see bellow everything you exec detected on kernel
 
 ![ebpf-cilium](./images/tetragon-test-1.png)
 
-Or see my **video** :
-
-![ebpf-cilium](./images/monitoring.mov)
+Or see my **video** : will updated to Youtube
 
 &nbsp;
 
@@ -211,10 +209,7 @@ kubectl exec -it xwing -- /bin/bash
 2. Your file will **KILLED** automatically, because it define on **tracing policy**
 ![ebpf-cilium](./images/tetragon-sigkill-2.png)
 
-Or see my **video** :
-
-![ebpf-cilium](./images/sigkill.mov)
-
+Or see my **video** : will updated to Youtube
 
 #### More for Tracing Policy references
 https://github.com/cilium/tetragon/tree/main/examples/tracingpolicy
