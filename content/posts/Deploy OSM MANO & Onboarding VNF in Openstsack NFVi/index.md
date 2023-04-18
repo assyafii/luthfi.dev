@@ -21,7 +21,7 @@ layout: 'list'
  
 ### **Requirements**
 
-1. **Openstack environment** (Check installation on http://luthfi.dev/docs/6.-install-openstack-aio-with-kolla-ansible-in-ubuntu/) 
+1. **Openstack environment** (Check installation on https://luthfi.dev/posts/install-openstack-aio-with-kolla-ansible-in-ubuntu/) 
 2. **Connectivity between Openstack & OSM**
 
 &nbsp;
