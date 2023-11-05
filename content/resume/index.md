@@ -1,6 +1,6 @@
 ---
 title: 
-date: 2020-06-18T22:45:06+02:00
+date: 2023-11-6T22:45:06+02:00
 draft: false
 author: 
 ---
@@ -24,8 +24,14 @@ Cloud Engineer & Highly motivated to learn something new. interested in Cloud, T
 
 
 ## Experiences
+
+**Technology Integration**, Amdocs\
+*Jul 2023 – Present*
+
+-	SmartOps Fusion
+
 **Lead of Research Team**, PT. Boer Technology (Btech)\
-*March 2022 – Present*
+*March 2022 – Jul 2023*
 
 -	Conduct & Manage team to handle all research backlog
 -	Manage technical research request by anothers team
